@@ -1,1 +1,1 @@
-# Stage-vault
+# StageVault
