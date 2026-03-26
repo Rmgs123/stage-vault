@@ -1,7 +1,10 @@
 import { useState } from 'react'
-import { Eye, EyeOff, ArrowRight, Vault } from 'lucide-react'
+import { Eye, EyeOff, ArrowRight, ArrowLeft, Vault, Mail, CircleCheck } from 'lucide-react'
 
 function App() {
+  const [currentPage, setCurrentPage] = useState('forgot')
+  const [resetSent, setResetSent] = useState(false)
+  const [resetEmail, setResetEmail] = useState('')
   const [activeTab, setActiveTab] = useState('register')
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
@@ -46,8 +49,28 @@ function App() {
     e.preventDefault()
   }
 
+  const handleGoToForgot = () => {
+    setCurrentPage('forgot')
+    setResetSent(false)
+    setResetEmail('')
+  }
+
+  const handleBackToAuth = () => {
+    setCurrentPage('auth')
+    setActiveTab('login')
+  }
+
+  const handleResetEmailChange = (e) => {
+    setResetEmail(e.target.value)
+  }
+
+  const handleResetSubmit = (e) => {
+    e.preventDefault()
+    setResetSent(true)
+  }
+
   return (
-    <div className="min-h-screen w-full bg-[#F3E4C9] flex items-center justify-center" style={{}}>
+    <div className="min-h-screen w-full bg-[#F3E4C9] flex items-center justify-center">
       <div className="flex flex-col items-center w-full max-w-[420px] px-4">
         {/* Logo & Brand */}
         <div className="flex items-center gap-3 mb-8">
@@ -59,7 +82,93 @@ function App() {
           </span>
         </div>
 
-        {/* Card */}
+        {/* FORGOT PASSWORD PAGE */}
+        {currentPage === 'forgot' && (
+          <div className="w-full bg-white rounded-2xl shadow-[0_4px_24px_rgba(169,139,118,0.12)] p-8">
+            {/* Back Button */}
+            <button
+              onClick={handleBackToAuth}
+              className="flex items-center gap-2 text-[13px] font-medium text-[#A98B76] hover:text-[#8B7261] transition-colors duration-150 mb-6 group"
+            >
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform duration-150" />
+              Назад ко входу
+            </button>
+
+            {!resetSent ? (
+              <div>
+                {/* Icon */}
+                <div className="w-14 h-14 bg-[#FAF3EA] rounded-2xl flex items-center justify-center mb-5">
+                  <Mail className="w-6 h-6 text-[#A98B76]" />
+                </div>
+
+                <h2 className="text-[22px] font-bold text-[#3D3127] mb-2" style={{ fontFamily: "'Georgia', serif" }}>
+                  Восстановление пароля
+                </h2>
+                <p className="text-[14px] text-[#9A8A7C] leading-relaxed mb-7">
+                  Введите адрес электронной почты, привязанный к вашему аккаунту. Мы отправим ссылку для сброса пароля.
+                </p>
+
+                <form onSubmit={handleResetSubmit} className="flex flex-col gap-5">
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[13px] font-medium text-[#7A6A5C]">Электронная почта</label>
+                    <input
+                      type="email"
+                      value={resetEmail}
+                      onChange={handleResetEmailChange}
+                      placeholder="name@example.com"
+                      className="w-full px-4 py-3 bg-[#FAF6F1] border border-[#E8DDD3] rounded-xl text-[15px] text-[#3D3127] placeholder-[#C4B5A6] outline-none focus:border-[#A98B76] focus:ring-2 focus:ring-[#A98B76]/10 transition-all duration-200"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full py-3.5 bg-[#A98B76] hover:bg-[#96796A] text-white text-[15px] font-semibold rounded-xl transition-all duration-200 shadow-[0_2px_8px_rgba(169,139,118,0.3)] hover:shadow-[0_4px_12px_rgba(169,139,118,0.4)]"
+                  >
+                    Отправить ссылку
+                  </button>
+                </form>
+              </div>
+            ) : (
+              <div className="text-center py-4">
+                {/* Success State */}
+                <div className="w-16 h-16 bg-[#BABF94]/15 rounded-full flex items-center justify-center mx-auto mb-5">
+                  <CircleCheck className="w-8 h-8 text-[#BABF94]" />
+                </div>
+
+                <h2 className="text-[22px] font-bold text-[#3D3127] mb-2" style={{ fontFamily: "'Georgia', serif" }}>
+                  Письмо отправлено
+                </h2>
+                <p className="text-[14px] text-[#9A8A7C] leading-relaxed mb-2">
+                  Мы отправили ссылку для сброса пароля на
+                </p>
+                <p className="text-[14px] font-semibold text-[#5C4A3A] mb-7">
+                  {resetEmail || 'name@example.com'}
+                </p>
+                <p className="text-[13px] text-[#B8A898] mb-7">
+                  Не получили письмо? Проверьте папку «Спам» или попробуйте снова.
+                </p>
+
+                <div className="flex flex-col gap-3">
+                  <button
+                    onClick={handleResetSubmit}
+                    className="w-full py-3.5 bg-[#A98B76] hover:bg-[#96796A] text-white text-[15px] font-semibold rounded-xl transition-all duration-200 shadow-[0_2px_8px_rgba(169,139,118,0.3)] hover:shadow-[0_4px_12px_rgba(169,139,118,0.4)]"
+                  >
+                    Отправить повторно
+                  </button>
+                  <button
+                    onClick={handleBackToAuth}
+                    className="w-full py-3.5 bg-[#FAF3EA] hover:bg-[#F3E4C9] text-[#A98B76] text-[15px] font-semibold rounded-xl transition-all duration-200"
+                  >
+                    Вернуться ко входу
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* AUTH PAGE (Login / Register) */}
+        {currentPage === 'auth' && (
         <div className="w-full bg-white rounded-2xl shadow-[0_4px_24px_rgba(169,139,118,0.12)] p-8">
           {/* Tab Toggle */}
           <div className="flex rounded-xl overflow-hidden border border-[#E8DDD3] mb-8">
@@ -155,7 +264,7 @@ function App() {
 
             {activeTab === 'login' && (
               <div className="flex justify-end -mt-1">
-                <button type="button" className="text-[13px] text-[#A98B76] hover:text-[#8B7261] font-medium transition-colors duration-150">
+                <button type="button" onClick={handleGoToForgot} className="text-[13px] text-[#A98B76] hover:text-[#8B7261] font-medium transition-colors duration-150">
                   Забыли пароль?
                 </button>
               </div>
@@ -185,11 +294,14 @@ function App() {
             </button>
           </div>
         </div>
+        )}
 
         {/* Footer */}
-        <p className="text-[12px] text-[#B8A898] mt-6 text-center">
-          Регистрируясь, вы соглашаетесь с условиями использования
-        </p>
+        {currentPage === 'auth' && (
+          <p className="text-[12px] text-[#B8A898] mt-6 text-center">
+            Регистрируясь, вы соглашаетесь с условиями использования
+          </p>
+        )}
       </div>
     </div>
   )
