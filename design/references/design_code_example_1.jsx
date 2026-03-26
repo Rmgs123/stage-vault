@@ -1,8 +1,12 @@
-import { useState } from 'react'
-import { Eye, EyeOff, ArrowRight, ArrowLeft, Vault, Mail, CircleCheck } from 'lucide-react'
+import { useState, useRef } from 'react'
+import { Eye, EyeOff, ArrowRight, ArrowLeft, Vault, Mail, CircleCheck, KeyRound, Loader2 } from 'lucide-react'
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('forgot')
+  const [currentPage, setCurrentPage] = useState('code')
+  const [codeDigits, setCodeDigits] = useState(['', '', '', '', '', ''])
+  const [codeError, setCodeError] = useState(false)
+  const [codeLoading, setCodeLoading] = useState(false)
+  const codeRefs = useRef([])
   const [resetSent, setResetSent] = useState(false)
   const [resetEmail, setResetEmail] = useState('')
   const [activeTab, setActiveTab] = useState('register')
@@ -67,6 +71,57 @@ function App() {
   const handleResetSubmit = (e) => {
     e.preventDefault()
     setResetSent(true)
+  }
+
+  const handleGoToCode = () => {
+    setCurrentPage('code')
+    setCodeDigits(['', '', '', '', '', ''])
+    setCodeError(false)
+    setCodeLoading(false)
+  }
+
+  const handleCodeChange = (index, value) => {
+    const char = value.slice(-1).toUpperCase()
+    if (char && !/^[A-Z0-9]$/.test(char)) return
+    const newDigits = [...codeDigits]
+    newDigits[index] = char
+    setCodeDigits(newDigits)
+    setCodeError(false)
+    if (char && index < 5 && codeRefs.current[index + 1]) {
+      codeRefs.current[index + 1].focus()
+    }
+  }
+
+  const handleCodeKeyDown = (index, e) => {
+    if (e.key === 'Backspace' && !codeDigits[index] && index > 0) {
+      codeRefs.current[index - 1].focus()
+    }
+  }
+
+  const handleCodePaste = (e) => {
+    e.preventDefault()
+    const pasted = e.clipboardData.getData('text').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6)
+    const newDigits = [...codeDigits]
+    for (let i = 0; i < 6; i++) {
+      newDigits[i] = pasted[i] || ''
+    }
+    setCodeDigits(newDigits)
+    const focusIdx = Math.min(pasted.length, 5)
+    if (codeRefs.current[focusIdx]) codeRefs.current[focusIdx].focus()
+  }
+
+  const handleCodeSubmit = (e) => {
+    e.preventDefault()
+    const code = codeDigits.join('')
+    if (code.length < 6) {
+      setCodeError(true)
+      return
+    }
+    setCodeLoading(true)
+    setTimeout(() => {
+      setCodeLoading(false)
+      setCodeError(true)
+    }, 1500)
   }
 
   return (
@@ -288,12 +343,94 @@ function App() {
           {/* Guest Access */}
           <div className="text-center">
             <p className="text-[13px] text-[#9A8A7C] mb-2">Есть код доступа?</p>
-            <button className="inline-flex items-center gap-2 text-[14px] font-semibold text-[#A98B76] hover:text-[#8B7261] transition-colors duration-150 group">
+            <button onClick={handleGoToCode} className="inline-flex items-center gap-2 text-[14px] font-semibold text-[#A98B76] hover:text-[#8B7261] transition-colors duration-150 group">
               Войти по коду
               <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-150" />
             </button>
           </div>
         </div>
+        )}
+
+        {/* CODE ENTRY PAGE */}
+        {currentPage === 'code' && (
+          <div className="w-full bg-white rounded-2xl shadow-[0_4px_24px_rgba(169,139,118,0.12)] p-8">
+            <button
+              onClick={handleBackToAuth}
+              className="flex items-center gap-2 text-[13px] font-medium text-[#A98B76] hover:text-[#8B7261] transition-colors duration-150 mb-6 group"
+            >
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform duration-150" />
+              Назад ко входу
+            </button>
+
+            <div className="w-14 h-14 bg-[#FAF3EA] rounded-2xl flex items-center justify-center mb-5">
+              <KeyRound className="w-6 h-6 text-[#A98B76]" />
+            </div>
+
+            <h2 className="text-[22px] font-bold text-[#3D3127] mb-2" style={{ fontFamily: "'Georgia', serif" }}>
+              Вход по коду доступа
+            </h2>
+            <p className="text-[14px] text-[#9A8A7C] leading-relaxed mb-1">
+              Введите 6-значный код, полученный от организатора мероприятия.
+            </p>
+            <p className="text-[12px] text-[#C4B5A6] mb-7">
+              stage-vault.ru/go
+            </p>
+
+            <form onSubmit={handleCodeSubmit}>
+              <div className="flex gap-3 mb-2 justify-center">
+                {codeDigits.map((digit, idx) => (
+                  <input
+                    key={idx}
+                    ref={(el) => { codeRefs.current[idx] = el }}
+                    type="text"
+                    inputMode="text"
+                    maxLength={1}
+                    value={digit}
+                    onChange={(e) => handleCodeChange(idx, e.target.value)}
+                    onKeyDown={(e) => handleCodeKeyDown(idx, e)}
+                    onPaste={handleCodePaste}
+                    className={`w-[52px] h-[60px] text-center text-[22px] font-bold tracking-widest rounded-xl border-2 outline-none transition-all duration-200 uppercase ${
+                      codeError
+                        ? 'bg-red-50/50 border-red-300 text-red-600'
+                        : digit
+                          ? 'bg-[#FAF6F1] border-[#A98B76] text-[#3D3127]'
+                          : 'bg-[#FAF6F1] border-[#E8DDD3] text-[#3D3127] focus:border-[#A98B76] focus:ring-2 focus:ring-[#A98B76]/10'
+                    }`}
+                  />
+                ))}
+              </div>
+
+              {codeError && (
+                <p className="text-[13px] text-red-500 text-center mb-4 mt-1">
+                  Неверный код. Проверьте и попробуйте снова.
+                </p>
+              )}
+              {!codeError && <div className="mb-5" />}
+
+              <button
+                type="submit"
+                disabled={codeLoading}
+                className="w-full py-3.5 bg-[#A98B76] hover:bg-[#96796A] disabled:bg-[#C4B5A6] text-white text-[15px] font-semibold rounded-xl transition-all duration-200 shadow-[0_2px_8px_rgba(169,139,118,0.3)] hover:shadow-[0_4px_12px_rgba(169,139,118,0.4)] flex items-center justify-center gap-2"
+              >
+                {codeLoading && <Loader2 className="w-4 h-4 animate-spin" />}
+                {codeLoading ? 'Проверяем...' : 'Войти'}
+              </button>
+            </form>
+
+            <div className="flex items-center gap-3 my-6">
+              <div className="flex-1 h-px bg-[#E8DDD3]" />
+              <span className="text-[12px] text-[#B8A898] uppercase tracking-wider font-medium">или</span>
+              <div className="flex-1 h-px bg-[#E8DDD3]" />
+            </div>
+
+            <div className="text-center">
+              <p className="text-[13px] text-[#9A8A7C] mb-2">Есть аккаунт?</p>
+              <button onClick={handleBackToAuth} className="inline-flex items-center gap-2 text-[14px] font-semibold text-[#A98B76] hover:text-[#8B7261] transition-colors duration-150 group">
+                Войти через аккаунт
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-150" />
+              </button>
+            </div>
+          </div>
         )}
 
         {/* Footer */}
