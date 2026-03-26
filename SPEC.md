@@ -1,7 +1,7 @@
 # StageVault — Спецификация проекта
 
 > Облачная платформа управления контентом мероприятий с ИИ-ассистентом
-> Домен: stage-vault.ru | Репозиторий: github.com/.../stagevault
+> Домен: stage-vault.ru | Репозиторий: [github.com/.../stagevault](https://github.com/Rmgs123/stage-vault)
 
 ---
 
