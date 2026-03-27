@@ -11,6 +11,7 @@
 | `design_code_example_2.jsx` | Дешборд проектов (мероприятий) |
 | `design_code_example_3.jsx` | Профиль пользователя |
 | `design_code_example_4.jsx` | Файлы Проекта |
+| `design_code_example_5.jsx` | Таймлайн Проекта |
 
 ## Что здесь важно для агентов
 
