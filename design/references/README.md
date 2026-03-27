@@ -7,13 +7,13 @@
 
 | Файл | Описание |
 |------|----------|
-| `design_code_example_1.jsx` | Экран входа / регистрации / сброс пароля|
+| `design_code_example_1.jsx` | Экран входа / Регистрации / Сброс пароля|
 | `design_code_example_2.jsx` | Дешборд проектов (мероприятий) |
 | `design_code_example_3.jsx` | Профиль пользователя |
 | `design_code_example_4.jsx` | Файлы Проекта |
 | `design_code_example_5.jsx` | Таймлайн Проекта |
 | `design_code_example_6.jsx` | Команда и Настройки Проекта |
-| `design_code_example_7.jsx` | Пульт ведущего и страница заглушка |
+| `design_code_example_7.jsx` | Пульт ведущего и Страница заглушка |
 
 ## Что здесь важно для агентов
 
