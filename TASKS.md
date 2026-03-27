@@ -11,7 +11,6 @@
 - [ ] Настройка Prisma + PostgreSQL (`docker-compose.dev.yml`)
 - [ ] Настройка MinIO для локальной разработки
 - [ ] Настройка Vite + React + Tailwind + React Router
-- [ ] Система тем light/dark (CSS variables)
 - [ ] MobileGuard — заглушка при ширине < 1024px
 - [ ] Базовый UI-кит: Button, Input, Modal, Card, Badge, Tooltip
 
