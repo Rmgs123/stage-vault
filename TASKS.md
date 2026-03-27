@@ -6,13 +6,13 @@
 
 ## Фаза 0: Подготовка
 
-- [ ] Инициализация монорепо (`packages/api` + `packages/web`)
-- [ ] Настройка TypeScript, ESLint, Prettier
-- [ ] Настройка Prisma + PostgreSQL (`docker-compose.dev.yml`)
-- [ ] Настройка MinIO для локальной разработки
-- [ ] Настройка Vite + React + Tailwind + React Router
-- [ ] MobileGuard — заглушка при ширине < 1024px
-- [ ] Базовый UI-кит: Button, Input, Modal, Card, Badge, Tooltip
+- [x] Инициализация монорепо (`packages/api` + `packages/web`)
+- [x] Настройка TypeScript, ESLint, Prettier
+- [x] Настройка Prisma + PostgreSQL (`docker-compose.dev.yml`)
+- [x] Настройка MinIO для локальной разработки
+- [x] Настройка Vite + React + Tailwind + React Router
+- [x] MobileGuard — заглушка при ширине < 1024px
+- [x] Базовый UI-кит: Button, Input, Modal, Card, Badge, Tooltip
 
 ## Фаза 1: Аутентификация
 
