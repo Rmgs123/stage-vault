@@ -13,6 +13,7 @@
 | `design_code_example_4.jsx` | Файлы Проекта |
 | `design_code_example_5.jsx` | Таймлайн Проекта |
 | `design_code_example_6.jsx` | Команда и Настройки Проекта |
+| `design_code_example_7.jsx` | Пульт ведущего и страница заглушка |
 
 ## Что здесь важно для агентов
 
