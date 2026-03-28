@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useParams, useNavigate, Outlet, useLocation } from 'react-router-dom'
 import { ChevronLeft, FolderOpen, Clock, Users, Settings, Loader2 } from 'lucide-react'
 import { useEventStore } from '../store/eventStore'
+import { isCodeAccess } from '../utils/codeAccess'
 
 const TABS = [
   { id: 'files', label: 'Файлы', icon: FolderOpen, path: '' },
@@ -62,7 +63,7 @@ export default function EventPage() {
           <div className="py-5 flex items-center justify-between">
             <div className="flex items-center gap-4">
               <button
-                onClick={() => navigate('/')}
+                onClick={() => navigate(isCodeAccess() ? '/go' : '/')}
                 className="w-9 h-9 flex items-center justify-center rounded-xl hover:bg-brand-100 transition-colors duration-150"
               >
                 <ChevronLeft className="w-5 h-5 text-text-muted" />
@@ -92,9 +93,13 @@ export default function EventPage() {
               const Icon = tab.icon
               const isActive = activeTabId === tab.id
               const isOwner = currentEvent.role === 'owner'
+              const codeMode = isCodeAccess()
 
-              // Settings tab only for owner
-              if (tab.id === 'settings' && !isOwner) return null
+              // Settings tab only for owner (and not for code access)
+              if (tab.id === 'settings' && (!isOwner || codeMode)) return null
+
+              // Team tab hidden for code access
+              if (tab.id === 'team' && codeMode) return null
 
               return (
                 <button
@@ -125,22 +130,3 @@ export default function EventPage() {
   )
 }
 
-// Placeholder components for tabs
-export function SettingsTab() {
-  return (
-    <div className="flex flex-col items-center justify-center py-16">
-      <div className="w-16 h-16 bg-brand-100 rounded-2xl flex items-center justify-center mb-4">
-        <Settings className="w-7 h-7 text-brand-400" />
-      </div>
-      <h3
-        className="text-[16px] font-semibold text-text-secondary mb-1"
-        style={{ fontFamily: "'Georgia', serif" }}
-      >
-        Настройки
-      </h3>
-      <p className="text-[14px] text-text-light">
-        Раздел настроек будет реализован в следующих фазах
-      </p>
-    </div>
-  )
-}

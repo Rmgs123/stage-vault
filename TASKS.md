@@ -76,14 +76,14 @@
 
 ## Фаза 6: Режим площадки
 
-- [ ] Модель AccessCode в Prisma
-- [ ] `POST /api/events/:id/access-codes` (генерация + TTL)
-- [ ] `DELETE` для досрочного отзыва
-- [ ] `POST /api/access/verify` (публичный, temp JWT)
-- [ ] Middleware: `codeAuthGuard`
-- [ ] Фронт: CodeEntryPage (`/go`)
-- [ ] Фронт: интеграция temp JWT
-- [ ] Фронт: скрытие запрещённых элементов
+- [x] Модель AccessCode в Prisma
+- [x] `POST /api/events/:id/access-codes` (генерация + TTL)
+- [x] `DELETE` для досрочного отзыва
+- [x] `POST /api/access/verify` (публичный, temp JWT)
+- [x] Middleware: `codeAuthGuard`
+- [x] Фронт: CodeEntryPage (`/go`)
+- [x] Фронт: интеграция temp JWT
+- [x] Фронт: скрытие запрещённых элементов
 
 ## Фаза 7: Пульт ведущего
 

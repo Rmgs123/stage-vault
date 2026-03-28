@@ -6,16 +6,19 @@ import ResetPasswordPage from './pages/ResetPasswordPage'
 import VerifyEmailPage from './pages/VerifyEmailPage'
 import ProfilePage from './pages/ProfilePage'
 import DashboardPage from './pages/DashboardPage'
-import EventPage, { SettingsTab } from './pages/EventPage'
+import EventPage from './pages/EventPage'
+import SettingsTab from './components/settings/SettingsTab'
 import FilesTab from './components/files/FilesTab'
 import TimelineTab from './components/timeline/TimelineTab'
 import TeamTab from './components/team/TeamTab'
+import CodeEntryPage from './pages/CodeEntryPage'
 
 export const routes: RouteObject[] = [
   { path: '/auth', element: <AuthPage /> },
   { path: '/forgot-password', element: <ForgotPasswordPage /> },
   { path: '/reset-password', element: <ResetPasswordPage /> },
   { path: '/verify-email', element: <VerifyEmailPage /> },
+  { path: '/go', element: <CodeEntryPage /> },
   {
     element: <AppShell />,
     children: [

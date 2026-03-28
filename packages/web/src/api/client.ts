@@ -7,7 +7,7 @@ export interface ApiError {
 
 class ApiClient {
   private getToken(): string | null {
-    return localStorage.getItem('accessToken')
+    return localStorage.getItem('accessToken') || localStorage.getItem('codeToken')
   }
 
   private async request<T>(path: string, options: RequestInit = {}): Promise<T> {

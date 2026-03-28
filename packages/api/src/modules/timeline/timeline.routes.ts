@@ -44,11 +44,20 @@ export default async function timelineRoutes(app: FastifyInstance) {
   // GET /api/events/:id/timeline — list blocks with attachments
   app.get('/api/events/:id/timeline', async (request, reply) => {
     const { id } = request.params as { id: string }
-    const userId = request.userId!
 
-    const { allowed } = await checkEventAccess(id, userId)
-    if (!allowed) {
-      return reply.code(403).send({ message: 'Нет доступа к проекту' })
+    // Code access check
+    if (request.isCodeAccess) {
+      if (request.codeEventId !== id) {
+        return reply.code(403).send({ message: 'Код доступа не относится к этому проекту' })
+      }
+      const event = await prisma.event.findUnique({ where: { id }, select: { id: true } })
+      if (!event) return reply.code(404).send({ message: 'Проект не найден' })
+    } else {
+      const userId = request.userId!
+      const { allowed } = await checkEventAccess(id, userId)
+      if (!allowed) {
+        return reply.code(403).send({ message: 'Нет доступа к проекту' })
+      }
     }
 
     const blocks = await prisma.timelineBlock.findMany({
@@ -96,14 +105,21 @@ export default async function timelineRoutes(app: FastifyInstance) {
   // POST /api/events/:id/timeline — create block
   app.post('/api/events/:id/timeline', async (request, reply) => {
     const { id } = request.params as { id: string }
-    const userId = request.userId!
 
-    const { allowed, isOwnerOrEditor } = await checkEventAccess(id, userId)
-    if (!allowed) {
-      return reply.code(403).send({ message: 'Нет доступа к проекту' })
-    }
-    if (!isOwnerOrEditor) {
-      return reply.code(403).send({ message: 'Недостаточно прав для редактирования сценария' })
+    // Code access check — code users have editor rights
+    if (request.isCodeAccess) {
+      if (request.codeEventId !== id) {
+        return reply.code(403).send({ message: 'Код доступа не относится к этому проекту' })
+      }
+    } else {
+      const userId = request.userId!
+      const { allowed, isOwnerOrEditor } = await checkEventAccess(id, userId)
+      if (!allowed) {
+        return reply.code(403).send({ message: 'Нет доступа к проекту' })
+      }
+      if (!isOwnerOrEditor) {
+        return reply.code(403).send({ message: 'Недостаточно прав для редактирования сценария' })
+      }
     }
 
     const parsed = createBlockSchema.safeParse(request.body)
@@ -139,14 +155,20 @@ export default async function timelineRoutes(app: FastifyInstance) {
   // PATCH /api/events/:id/timeline/:bid — update block
   app.patch('/api/events/:id/timeline/:bid', async (request, reply) => {
     const { id, bid } = request.params as { id: string; bid: string }
-    const userId = request.userId!
 
-    const { allowed, isOwnerOrEditor } = await checkEventAccess(id, userId)
-    if (!allowed) {
-      return reply.code(403).send({ message: 'Нет доступа к проекту' })
-    }
-    if (!isOwnerOrEditor) {
-      return reply.code(403).send({ message: 'Недостаточно прав для редактирования сценария' })
+    if (request.isCodeAccess) {
+      if (request.codeEventId !== id) {
+        return reply.code(403).send({ message: 'Код доступа не относится к этому проекту' })
+      }
+    } else {
+      const userId = request.userId!
+      const { allowed, isOwnerOrEditor } = await checkEventAccess(id, userId)
+      if (!allowed) {
+        return reply.code(403).send({ message: 'Нет доступа к проекту' })
+      }
+      if (!isOwnerOrEditor) {
+        return reply.code(403).send({ message: 'Недостаточно прав для редактирования сценария' })
+      }
     }
 
     const block = await prisma.timelineBlock.findFirst({
@@ -213,14 +235,20 @@ export default async function timelineRoutes(app: FastifyInstance) {
   // DELETE /api/events/:id/timeline/:bid — delete block
   app.delete('/api/events/:id/timeline/:bid', async (request, reply) => {
     const { id, bid } = request.params as { id: string; bid: string }
-    const userId = request.userId!
 
-    const { allowed, isOwnerOrEditor } = await checkEventAccess(id, userId)
-    if (!allowed) {
-      return reply.code(403).send({ message: 'Нет доступа к проекту' })
-    }
-    if (!isOwnerOrEditor) {
-      return reply.code(403).send({ message: 'Недостаточно прав для удаления блока' })
+    if (request.isCodeAccess) {
+      if (request.codeEventId !== id) {
+        return reply.code(403).send({ message: 'Код доступа не относится к этому проекту' })
+      }
+    } else {
+      const userId = request.userId!
+      const { allowed, isOwnerOrEditor } = await checkEventAccess(id, userId)
+      if (!allowed) {
+        return reply.code(403).send({ message: 'Нет доступа к проекту' })
+      }
+      if (!isOwnerOrEditor) {
+        return reply.code(403).send({ message: 'Недостаточно прав для удаления блока' })
+      }
     }
 
     const block = await prisma.timelineBlock.findFirst({
@@ -238,14 +266,20 @@ export default async function timelineRoutes(app: FastifyInstance) {
   // PATCH /api/events/:id/timeline/reorder — reorder blocks
   app.patch('/api/events/:id/timeline/reorder', async (request, reply) => {
     const { id } = request.params as { id: string }
-    const userId = request.userId!
 
-    const { allowed, isOwnerOrEditor } = await checkEventAccess(id, userId)
-    if (!allowed) {
-      return reply.code(403).send({ message: 'Нет доступа к проекту' })
-    }
-    if (!isOwnerOrEditor) {
-      return reply.code(403).send({ message: 'Недостаточно прав для изменения порядка' })
+    if (request.isCodeAccess) {
+      if (request.codeEventId !== id) {
+        return reply.code(403).send({ message: 'Код доступа не относится к этому проекту' })
+      }
+    } else {
+      const userId = request.userId!
+      const { allowed, isOwnerOrEditor } = await checkEventAccess(id, userId)
+      if (!allowed) {
+        return reply.code(403).send({ message: 'Нет доступа к проекту' })
+      }
+      if (!isOwnerOrEditor) {
+        return reply.code(403).send({ message: 'Недостаточно прав для изменения порядка' })
+      }
     }
 
     const parsed = reorderSchema.safeParse(request.body)
@@ -284,14 +318,20 @@ export default async function timelineRoutes(app: FastifyInstance) {
   // POST /api/events/:id/timeline/:bid/attachments — attach file to block
   app.post('/api/events/:id/timeline/:bid/attachments', async (request, reply) => {
     const { id, bid } = request.params as { id: string; bid: string }
-    const userId = request.userId!
 
-    const { allowed, isOwnerOrEditor } = await checkEventAccess(id, userId)
-    if (!allowed) {
-      return reply.code(403).send({ message: 'Нет доступа к проекту' })
-    }
-    if (!isOwnerOrEditor) {
-      return reply.code(403).send({ message: 'Недостаточно прав для прикрепления файлов' })
+    if (request.isCodeAccess) {
+      if (request.codeEventId !== id) {
+        return reply.code(403).send({ message: 'Код доступа не относится к этому проекту' })
+      }
+    } else {
+      const userId = request.userId!
+      const { allowed, isOwnerOrEditor } = await checkEventAccess(id, userId)
+      if (!allowed) {
+        return reply.code(403).send({ message: 'Нет доступа к проекту' })
+      }
+      if (!isOwnerOrEditor) {
+        return reply.code(403).send({ message: 'Недостаточно прав для прикрепления файлов' })
+      }
     }
 
     const block = await prisma.timelineBlock.findFirst({
@@ -354,14 +394,20 @@ export default async function timelineRoutes(app: FastifyInstance) {
   // DELETE /api/events/:id/timeline/:bid/attachments/:aid — detach file from block
   app.delete('/api/events/:id/timeline/:bid/attachments/:aid', async (request, reply) => {
     const { id, bid, aid } = request.params as { id: string; bid: string; aid: string }
-    const userId = request.userId!
 
-    const { allowed, isOwnerOrEditor } = await checkEventAccess(id, userId)
-    if (!allowed) {
-      return reply.code(403).send({ message: 'Нет доступа к проекту' })
-    }
-    if (!isOwnerOrEditor) {
-      return reply.code(403).send({ message: 'Недостаточно прав для открепления файлов' })
+    if (request.isCodeAccess) {
+      if (request.codeEventId !== id) {
+        return reply.code(403).send({ message: 'Код доступа не относится к этому проекту' })
+      }
+    } else {
+      const userId = request.userId!
+      const { allowed, isOwnerOrEditor } = await checkEventAccess(id, userId)
+      if (!allowed) {
+        return reply.code(403).send({ message: 'Нет доступа к проекту' })
+      }
+      if (!isOwnerOrEditor) {
+        return reply.code(403).send({ message: 'Недостаточно прав для открепления файлов' })
+      }
     }
 
     const attachment = await prisma.blockAttachment.findFirst({

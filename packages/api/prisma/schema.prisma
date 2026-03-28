@@ -99,6 +99,7 @@ model AccessCode {
   eventId   String
   code      String   @unique
   expiresAt DateTime
+  revoked   Boolean  @default(false)
   createdAt DateTime @default(now())
 
   event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)

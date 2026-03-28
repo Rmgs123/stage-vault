@@ -68,11 +68,20 @@ export default async function filesRoutes(app: FastifyInstance) {
   // GET /api/events/:id/files — list files for an event
   app.get('/api/events/:id/files', async (request, reply) => {
     const { id } = request.params as { id: string }
-    const userId = request.userId!
 
-    const { event } = await checkEventAccess(id, userId)
-    if (!event) {
-      return reply.code(404).send({ message: 'Проект не найден или нет доступа' })
+    // Code access check
+    if (request.isCodeAccess) {
+      if (request.codeEventId !== id) {
+        return reply.code(403).send({ message: 'Код доступа не относится к этому проекту' })
+      }
+      const event = await prisma.event.findUnique({ where: { id }, select: { id: true } })
+      if (!event) return reply.code(404).send({ message: 'Проект не найден' })
+    } else {
+      const userId = request.userId!
+      const { event } = await checkEventAccess(id, userId)
+      if (!event) {
+        return reply.code(404).send({ message: 'Проект не найден или нет доступа' })
+      }
     }
 
     const category = (request.query as { category?: string }).category
@@ -91,11 +100,24 @@ export default async function filesRoutes(app: FastifyInstance) {
   // POST /api/events/:id/files — upload file(s)
   app.post('/api/events/:id/files', async (request, reply) => {
     const { id } = request.params as { id: string }
-    const userId = request.userId!
 
-    const { event, role } = await checkEventAccess(id, userId)
-    if (!event) {
-      return reply.code(404).send({ message: 'Проект не найден или нет доступа' })
+    let role: string | null = null
+
+    // Code access check
+    if (request.isCodeAccess) {
+      if (request.codeEventId !== id) {
+        return reply.code(403).send({ message: 'Код доступа не относится к этому проекту' })
+      }
+      const event = await prisma.event.findUnique({ where: { id }, select: { id: true } })
+      if (!event) return reply.code(404).send({ message: 'Проект не найден' })
+      role = 'editor' // code access has editor-level permissions for file upload
+    } else {
+      const userId = request.userId!
+      const result = await checkEventAccess(id, userId)
+      if (!result.event) {
+        return reply.code(404).send({ message: 'Проект не найден или нет доступа' })
+      }
+      role = result.role
     }
 
     if (role === 'viewer') {
@@ -179,11 +201,20 @@ export default async function filesRoutes(app: FastifyInstance) {
   // GET /api/events/:id/files/:fid — get presigned download URL
   app.get('/api/events/:id/files/:fid', async (request, reply) => {
     const { id, fid } = request.params as { id: string; fid: string }
-    const userId = request.userId!
 
-    const { event } = await checkEventAccess(id, userId)
-    if (!event) {
-      return reply.code(404).send({ message: 'Проект не найден или нет доступа' })
+    // Code access check
+    if (request.isCodeAccess) {
+      if (request.codeEventId !== id) {
+        return reply.code(403).send({ message: 'Код доступа не относится к этому проекту' })
+      }
+      const event = await prisma.event.findUnique({ where: { id }, select: { id: true } })
+      if (!event) return reply.code(404).send({ message: 'Проект не найден' })
+    } else {
+      const userId = request.userId!
+      const { event } = await checkEventAccess(id, userId)
+      if (!event) {
+        return reply.code(404).send({ message: 'Проект не найден или нет доступа' })
+      }
     }
 
     const file = await prisma.file.findFirst({

@@ -22,7 +22,11 @@ export default async function eventsRoutes(app: FastifyInstance) {
   app.addHook('preHandler', authGuard)
 
   // GET /api/events — list my events + events where I'm a member
-  app.get('/api/events', async (request) => {
+  app.get('/api/events', async (request, reply) => {
+    // Code access users can only see the event they have access to
+    if (request.isCodeAccess) {
+      return reply.send([])
+    }
     const userId = request.userId!
 
     const events = await prisma.event.findMany({
@@ -81,6 +85,30 @@ export default async function eventsRoutes(app: FastifyInstance) {
   // GET /api/events/:id — get single event
   app.get('/api/events/:id', async (request, reply) => {
     const { id } = request.params as { id: string }
+
+    // Code access: only allow access to the event the code was generated for
+    if (request.isCodeAccess) {
+      if (request.codeEventId !== id) {
+        return reply.code(403).send({ message: 'Код доступа не относится к этому проекту' })
+      }
+      const event = await prisma.event.findUnique({
+        where: { id },
+        include: {
+          owner: { select: { id: true, nickname: true, email: true } },
+          _count: { select: { members: true, files: true } },
+        },
+      })
+      if (!event) {
+        return reply.code(404).send({ message: 'Проект не найден' })
+      }
+      return {
+        ...event,
+        role: 'code_access',
+        membersCount: event._count.members + 1,
+        filesCount: event._count.files,
+      }
+    }
+
     const userId = request.userId!
 
     const event = await prisma.event.findUnique({
