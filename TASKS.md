@@ -53,14 +53,14 @@
 
 ## Фаза 4: Сценарий (Timeline)
 
-- [ ] Модели TimelineBlock, BlockAttachment в Prisma
-- [ ] CRUD `/api/events/:id/timeline`
-- [ ] `PATCH /api/events/:id/timeline/reorder`
-- [ ] Прикрепление / открепление файлов к блокам
-- [ ] Фронт: TimelineBlock (название, описание, таймер, чекбокс)
-- [ ] Фронт: Drag-and-drop сортировка
-- [ ] Фронт: Timer (обратный отсчёт, start/stop/reset)
-- [ ] Фронт: ProgressBar (общий прогресс)
+- [x] Модели TimelineBlock, BlockAttachment в Prisma
+- [x] CRUD `/api/events/:id/timeline`
+- [x] `PATCH /api/events/:id/timeline/reorder`
+- [x] Прикрепление / открепление файлов к блокам
+- [x] Фронт: TimelineBlock (название, описание, таймер, чекбокс)
+- [x] Фронт: Drag-and-drop сортировка
+- [x] Фронт: Timer (обратный отсчёт, start/stop/reset)
+- [x] Фронт: ProgressBar (общий прогресс)
 
 ## Фаза 5: Команды и Inbox
 

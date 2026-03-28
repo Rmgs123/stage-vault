@@ -6,6 +6,7 @@ import authRoutes from './modules/auth/auth.routes.js'
 import usersRoutes from './modules/users/users.routes.js'
 import eventsRoutes from './modules/events/events.routes.js'
 import filesRoutes from './modules/files/files.routes.js'
+import timelineRoutes from './modules/timeline/timeline.routes.js'
 
 dotenv.config({ path: '../../.env' })
 
@@ -27,6 +28,7 @@ await app.register(authRoutes)
 await app.register(usersRoutes)
 await app.register(eventsRoutes)
 await app.register(filesRoutes)
+await app.register(timelineRoutes)
 
 app.get('/api/health', async () => {
   return { status: 'ok', timestamp: new Date().toISOString() }
