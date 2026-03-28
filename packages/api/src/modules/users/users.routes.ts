@@ -21,9 +21,45 @@ const themeSchema = z.object({
 })
 
 export default async function usersRoutes(app: FastifyInstance) {
+  // GET /api/users/search?q= — search users by nickname or email (for invite)
+  app.get('/api/users/search', { preHandler: [authGuard] }, async (request, reply) => {
+    const userId = request.userId!
+    const { q } = request.query as { q?: string }
+
+    if (!q || q.trim().length < 2) {
+      return reply.code(400).send({ message: 'Введите минимум 2 символа для поиска' })
+    }
+
+    const query = q.trim()
+
+    const users = await prisma.user.findMany({
+      where: {
+        AND: [
+          { id: { not: userId } },
+          { emailVerified: true },
+          {
+            OR: [
+              { nickname: { contains: query, mode: 'insensitive' } },
+              { email: { contains: query, mode: 'insensitive' } },
+            ],
+          },
+        ],
+      },
+      select: {
+        id: true,
+        email: true,
+        nickname: true,
+      },
+      take: 10,
+      orderBy: { nickname: 'asc' },
+    })
+
+    return users
+  })
+
   // GET /api/users/me — get current user profile
   app.get('/api/users/me', { preHandler: [authGuard] }, async (request, reply) => {
-    const userId = (request as any).userId
+    const userId = request.userId!
 
     const user = await prisma.user.findUnique({
       where: { id: userId },

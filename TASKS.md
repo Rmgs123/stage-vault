@@ -64,15 +64,15 @@
 
 ## Фаза 5: Команды и Inbox
 
-- [ ] Модель Notification в Prisma
-- [ ] `POST /api/events/:id/members/invite`
-- [ ] `GET/PATCH/DELETE` для участников
-- [ ] `GET /api/notifications` + accept/decline
-- [ ] `GET /api/users/search`
-- [ ] Middleware: `roleGuard`
-- [ ] Фронт: TeamPanel (участники, роли)
-- [ ] Фронт: InviteDialog (поиск + приглашение)
-- [ ] Фронт: InboxPanel (бейдж, уведомления, кнопки)
+- [x] Модель Notification в Prisma
+- [x] `POST /api/events/:id/members/invite`
+- [x] `GET/PATCH/DELETE` для участников
+- [x] `GET /api/notifications` + accept/decline
+- [x] `GET /api/users/search`
+- [x] Middleware: `roleGuard`
+- [x] Фронт: TeamPanel (участники, роли)
+- [x] Фронт: InviteDialog (поиск + приглашение)
+- [x] Фронт: InboxPanel (бейдж, уведомления, кнопки)
 
 ## Фаза 6: Режим площадки
 

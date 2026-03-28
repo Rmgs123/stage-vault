@@ -483,10 +483,117 @@ curl -X DELETE http://localhost:3000/api/events/<id>/timeline/<bid> \
 
 ---
 
+---
+
+## 5.5 Фаза 5: Команды и Inbox
+
+### 5.5.1 Поиск пользователей (API)
+
+```bash
+# Поиск по никнейму (минимум 2 символа)
+curl -s http://localhost:3000/api/users/search?q=al \
+  -H "Authorization: Bearer $TOKEN" | jq .
+
+# Должен вернуть массив: [{id, email, nickname}, ...]
+```
+
+### 5.5.2 Приглашение участника
+
+```bash
+# Получить список участников
+curl -s http://localhost:3000/api/events/$EVENT_ID/members \
+  -H "Authorization: Bearer $TOKEN" | jq .
+
+# Пригласить (от лица владельца)
+curl -s -X POST http://localhost:3000/api/events/$EVENT_ID/members/invite \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"userId": "TARGET_USER_ID"}' | jq .
+
+# Должен вернуть: {message: "Приглашение отправлено", data: {notificationId: "..."}}
+```
+
+### 5.5.3 Уведомления (Inbox)
+
+```bash
+# Получить уведомления (от лица приглашённого)
+curl -s http://localhost:3000/api/notifications \
+  -H "Authorization: Bearer $TOKEN2" | jq .
+
+# Количество непрочитанных
+curl -s http://localhost:3000/api/notifications/unread-count \
+  -H "Authorization: Bearer $TOKEN2" | jq .
+
+# Принять приглашение
+curl -s -X POST http://localhost:3000/api/notifications/$NID/accept \
+  -H "Authorization: Bearer $TOKEN2" | jq .
+
+# Отклонить приглашение
+curl -s -X POST http://localhost:3000/api/notifications/$NID/decline \
+  -H "Authorization: Bearer $TOKEN2" | jq .
+```
+
+### 5.5.4 Смена роли участника
+
+```bash
+# Изменить роль (owner only)
+curl -s -X PATCH http://localhost:3000/api/events/$EVENT_ID/members/$MID \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"role": "editor"}' | jq .
+```
+
+### 5.5.5 Удаление участника
+
+```bash
+# Удалить участника (owner only)
+curl -s -X DELETE http://localhost:3000/api/events/$EVENT_ID/members/$MID \
+  -H "Authorization: Bearer $TOKEN" | jq .
+```
+
+### 5.5.6 Тестирование через UI
+
+1. **Регистрация двух пользователей** — зарегистрируйте два аккаунта (User A — владелец, User B — приглашаемый). Оба должны задать никнейм в профиле.
+
+2. **Вкладка «Команда»** — откройте проект User A → вкладка «Команда».
+   - Должен отображаться только владелец
+   - Кнопка «Пригласить» доступна владельцу
+
+3. **Приглашение пользователя** — нажмите «Пригласить» → в поисковой строке введите никнейм или email User B.
+   - Результаты поиска должны появиться после 2+ символов
+   - Нажмите «Пригласить» — должно появиться «Отправлено»
+
+4. **Inbox (колокольчик)** — войдите как User B, нажмите на колокольчик в шапке.
+   - Должен отображаться бейдж с числом непрочитанных уведомлений
+   - Уведомление: «User A пригласил вас в проект»
+   - Кнопки «Принять» / «Отклонить»
+
+5. **Принять приглашение** — нажмите «Принять».
+   - Должен перенаправить на страницу проекта
+   - Бейдж должен исчезнуть (или уменьшиться)
+
+6. **Проверка списка участников** — откройте вкладку «Команда» того же проекта.
+   - Должен быть виден User B как «Зритель»
+
+7. **Смена роли** (от лица владельца) — кликните на роль участника → выберите «Редактор».
+   - Роль должна обновиться
+   - User B получит уведомление об изменении роли
+
+8. **Удаление участника** — нажмите кнопку удаления (иконка UserMinus).
+   - Участник исчезнет из списка
+   - User B получит уведомление об удалении
+
+9. **Проверка прав доступа** — войдите как User B (зритель).
+   - На вкладке «Команда» не должно быть кнопки «Пригласить»
+   - Смена ролей недоступна
+   - Вкладка «Настройки» видна только владельцу
+
+---
+
 ## 6. Git: коммит и пуш
 
 ```bash
 git add -A
-git commit -m "feat: Phase 4 — timeline (CRUD, reorder, attachments, timer, progress bar)"
+git commit -m "feat: Phase 5 — teams, invites, inbox (notifications, role management)"
 git push origin main
 ```

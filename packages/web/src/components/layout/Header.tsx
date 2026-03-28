@@ -2,12 +2,24 @@ import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Vault, Bell, ChevronDown, User, Moon, LogOut } from 'lucide-react'
 import { useAuthStore } from '../../store/authStore'
+import { useNotificationStore } from '../../store/notificationStore'
+import InboxPanel from '../inbox/InboxPanel'
 
 export function Header() {
   const { user, logout } = useAuthStore()
+  const { unreadCount, fetchUnreadCount } = useNotificationStore()
   const navigate = useNavigate()
   const [showProfileMenu, setShowProfileMenu] = useState(false)
+  const [showInbox, setShowInbox] = useState(false)
   const profileRef = useRef<HTMLDivElement>(null)
+  const inboxRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    fetchUnreadCount()
+    // Poll for unread count every 30 seconds
+    const interval = setInterval(fetchUnreadCount, 30000)
+    return () => clearInterval(interval)
+  }, [fetchUnreadCount])
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -42,10 +54,21 @@ export function Header() {
 
         {/* Right */}
         <div className="flex items-center gap-2">
-          {/* Notifications bell (placeholder) */}
-          <button className="relative w-10 h-10 flex items-center justify-center rounded-xl hover:bg-brand-100 transition-colors duration-150">
-            <Bell className="w-5 h-5 text-text-muted" />
-          </button>
+          {/* Notifications bell */}
+          <div ref={inboxRef} className="relative">
+            <button
+              onClick={() => setShowInbox(!showInbox)}
+              className="relative w-10 h-10 flex items-center justify-center rounded-xl hover:bg-brand-100 transition-colors duration-150"
+            >
+              <Bell className="w-5 h-5 text-text-muted" />
+              {unreadCount > 0 && (
+                <span className="absolute top-1.5 right-1.5 w-[18px] h-[18px] bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                  {unreadCount > 9 ? '9+' : unreadCount}
+                </span>
+              )}
+            </button>
+            {showInbox && <InboxPanel onClose={() => setShowInbox(false)} />}
+          </div>
 
           {/* Profile dropdown */}
           <div ref={profileRef} className="relative">

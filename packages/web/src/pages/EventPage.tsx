@@ -126,25 +126,6 @@ export default function EventPage() {
 }
 
 // Placeholder components for tabs
-export function TeamTab() {
-  return (
-    <div className="flex flex-col items-center justify-center py-16">
-      <div className="w-16 h-16 bg-brand-100 rounded-2xl flex items-center justify-center mb-4">
-        <Users className="w-7 h-7 text-brand-400" />
-      </div>
-      <h3
-        className="text-[16px] font-semibold text-text-secondary mb-1"
-        style={{ fontFamily: "'Georgia', serif" }}
-      >
-        Команда
-      </h3>
-      <p className="text-[14px] text-text-light">
-        Раздел команды будет реализован в Фазе 5
-      </p>
-    </div>
-  )
-}
-
 export function SettingsTab() {
   return (
     <div className="flex flex-col items-center justify-center py-16">
