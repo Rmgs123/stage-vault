@@ -51,6 +51,30 @@ class ApiClient {
   delete<T>(path: string) {
     return this.request<T>(path, { method: 'DELETE' })
   }
+
+  async upload<T>(path: string, files: File[]): Promise<T> {
+    const token = this.getToken()
+    const formData = new FormData()
+    files.forEach((file) => formData.append('file', file))
+
+    const headers: Record<string, string> = {}
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`
+    }
+
+    const res = await fetch(`${API_BASE}${path}`, {
+      method: 'POST',
+      headers,
+      body: formData,
+    })
+
+    if (!res.ok) {
+      const error = await res.json().catch(() => ({ message: 'Ошибка запроса' }))
+      throw { message: error.message || 'Ошибка запроса', statusCode: res.status } as ApiError
+    }
+
+    return res.json()
+  }
 }
 
 export const api = new ApiClient()

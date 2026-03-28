@@ -1,9 +1,11 @@
 import Fastify from 'fastify'
 import cors from '@fastify/cors'
+import multipart from '@fastify/multipart'
 import dotenv from 'dotenv'
 import authRoutes from './modules/auth/auth.routes.js'
 import usersRoutes from './modules/users/users.routes.js'
 import eventsRoutes from './modules/events/events.routes.js'
+import filesRoutes from './modules/files/files.routes.js'
 
 dotenv.config({ path: '../../.env' })
 
@@ -14,10 +16,17 @@ await app.register(cors, {
   credentials: true,
 })
 
+await app.register(multipart, {
+  limits: {
+    fileSize: 500 * 1024 * 1024, // 500 MB
+  },
+})
+
 // Routes
 await app.register(authRoutes)
 await app.register(usersRoutes)
 await app.register(eventsRoutes)
+await app.register(filesRoutes)
 
 app.get('/api/health', async () => {
   return { status: 'ok', timestamp: new Date().toISOString() }

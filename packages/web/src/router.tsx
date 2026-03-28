@@ -6,7 +6,8 @@ import ResetPasswordPage from './pages/ResetPasswordPage'
 import VerifyEmailPage from './pages/VerifyEmailPage'
 import ProfilePage from './pages/ProfilePage'
 import DashboardPage from './pages/DashboardPage'
-import EventPage, { FilesTab, TimelineTab, TeamTab, SettingsTab } from './pages/EventPage'
+import EventPage, { TimelineTab, TeamTab, SettingsTab } from './pages/EventPage'
+import FilesTab from './components/files/FilesTab'
 
 export const routes: RouteObject[] = [
   { path: '/auth', element: <AuthPage /> },

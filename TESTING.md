@@ -289,7 +289,88 @@ curl -X DELETE http://localhost:3000/api/events/<id> \
 
 ---
 
-### Фаза 3–10
+### Фаза 3: Хранилище файлов
+
+#### 5.3.0 Подготовка MinIO (один раз)
+
+MinIO запускается через `docker compose -f docker-compose.dev.yml up`. Бакет создаётся автоматически при первой загрузке файла. Если нет — создай вручную:
+
+1. Открой MinIO Console: **http://localhost:9001**
+2. Войди: `minioadmin` / `minioadmin`
+3. Создай бакет `stagevault-files`
+
+#### 5.3.1 Загрузка файлов (через UI)
+
+1. Войди в аккаунт → открой проект → вкладка **«Файлы»**
+2. Перетащи файл(ы) в зону загрузки или нажми на неё для выбора
+3. Файлы должны появиться в соответствующей категории:
+   - `.mp3`, `.wav`, `.ogg` → **Музыка** (с плеером)
+   - `.pdf`, `.pptx` → **Презентации** (карточки)
+   - `.jpg`, `.png`, `.svg` → **Изображения** (карточки с просмотром)
+   - `.mp4`, `.webm` → **Видео** (карточки)
+   - `.txt`, `.md`, `.doc` → **Документы** (список)
+   - всё остальное → **Прочее** (список)
+
+#### 5.3.2 Аудиоплеер
+
+1. Загрузи несколько аудиофайлов (`.mp3`)
+2. В секции **Музыка** появится плеер с кнопками Play/Pause, навигацией ▶/◀, громкостью
+3. Нажми на трек в списке — он начнёт воспроизводиться
+4. Проверь переключение треков, регулировку громкости, mute
+
+#### 5.3.3 Просмотр изображений
+
+1. Загрузи несколько изображений (`.jpg`, `.png`)
+2. Наведи на карточку → нажми иконку 👁 (Eye)
+3. Должен открыться полноэкранный просмотр с навигацией ◀/▶
+4. Нажми `Esc` или `X` для закрытия
+
+#### 5.3.4 Скачивание и удаление
+
+1. Наведи на файл → нажми иконку скачивания → файл должен открыться/скачаться
+2. Наведи на файл → нажми иконку удаления (корзина) → подтверди → файл удалится
+
+#### 5.3.5 Проверка через API (curl)
+
+```bash
+# Получи токен:
+TOKEN=$(curl -s -X POST http://localhost:3000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test@test.com","password":"12345678"}' | grep -o '"accessToken":"[^"]*"' | cut -d'"' -f4)
+
+# Загрузить файл (подставь id проекта)
+curl -X POST http://localhost:3000/api/events/<id>/files \
+  -H "Authorization: Bearer $TOKEN" \
+  -F "file=@/path/to/test.mp3"
+
+# Список файлов проекта
+curl http://localhost:3000/api/events/<id>/files \
+  -H "Authorization: Bearer $TOKEN"
+
+# Получить файл (presigned URL)
+curl http://localhost:3000/api/events/<id>/files/<fid> \
+  -H "Authorization: Bearer $TOKEN"
+
+# Обновить файл (переименовать)
+curl -X PATCH http://localhost:3000/api/events/<id>/files/<fid> \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{"name":"Новое название.mp3"}'
+
+# Удалить файл
+curl -X DELETE http://localhost:3000/api/events/<id>/files/<fid> \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+#### 5.3.6 Проверка прав доступа
+
+- **Владелец** и **редактор** могут загружать, редактировать и удалять файлы
+- **Зритель** может только просматривать и скачивать (получит 403 при попытке загрузки/удаления)
+- Неавторизованный пользователь получит 401
+
+---
+
+### Фаза 4–10
 
 > Будет дополняться по мере реализации.
 
@@ -299,6 +380,6 @@ curl -X DELETE http://localhost:3000/api/events/<id> \
 
 ```bash
 git add -A
-git commit -m "feat: Phase 2 — events CRUD, DashboardPage, EventPage with tabs"
+git commit -m "feat: Phase 3 — file storage, S3 upload/download, AudioPlayer, ImageViewer"
 git push origin main
 ```

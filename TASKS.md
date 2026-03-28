@@ -38,18 +38,18 @@
 
 ## Фаза 3: Хранилище файлов
 
-- [ ] Модель File в Prisma, миграция
-- [ ] S3 клиент (MinIO): upload, download, delete
-- [ ] `POST /api/events/:id/files` (multipart, автокатегоризация)
-- [ ] `GET /api/events/:id/files` (фильтр по категории)
-- [ ] `GET /api/events/:id/files/:fid` (presigned URL)
-- [ ] `PATCH`, `DELETE` для файлов
-- [ ] Фронт: FileUploader (drag-and-drop + кнопка)
-- [ ] Фронт: FileCard (превью, действия)
-- [ ] Фронт: вкладки по категориям
-- [ ] Фронт: AudioPlayer (плейлист, управление)
+- [x] Модель File в Prisma, миграция
+- [x] S3 клиент (MinIO): upload, download, delete
+- [x] `POST /api/events/:id/files` (multipart, автокатегоризация)
+- [x] `GET /api/events/:id/files` (фильтр по категории)
+- [x] `GET /api/events/:id/files/:fid` (presigned URL)
+- [x] `PATCH`, `DELETE` для файлов
+- [x] Фронт: FileUploader (drag-and-drop + кнопка)
+- [x] Фронт: FileCard (превью, действия)
+- [x] Фронт: вкладки по категориям
+- [x] Фронт: AudioPlayer (плейлист, управление)
 - [ ] Фронт: PDFViewer (pdf.js, fullscreen)
-- [ ] Фронт: ImageViewer (галерея, fullscreen)
+- [x] Фронт: ImageViewer (галерея, fullscreen)
 
 ## Фаза 4: Сценарий (Timeline)
 
