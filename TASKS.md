@@ -16,17 +16,17 @@
 
 ## Фаза 1: Аутентификация
 
-- [ ] Модель User в Prisma, миграция
-- [ ] `POST /api/auth/register` (валидация, bcrypt)
-- [ ] Отправка email подтверждения (Nodemailer)
-- [ ] `POST /api/auth/verify-email`
-- [ ] `POST /api/auth/login` (JWT access + refresh)
-- [ ] `POST /api/auth/refresh`
-- [ ] `POST /api/auth/forgot-password` + `reset-password`
-- [ ] Middleware: `authGuard`
-- [ ] Фронт: LoginPage, RegisterPage, ForgotPasswordPage
-- [ ] Фронт: AuthStore (Zustand) + ProtectedRoute
-- [ ] Фронт: ProfilePage (никнейм, смена пароля, тема)
+- [x] Модель User в Prisma, миграция
+- [x] `POST /api/auth/register` (валидация, bcrypt)
+- [x] Отправка email подтверждения (Nodemailer)
+- [x] `POST /api/auth/verify-email`
+- [x] `POST /api/auth/login` (JWT access + refresh)
+- [x] `POST /api/auth/refresh`
+- [x] `POST /api/auth/forgot-password` + `reset-password`
+- [x] Middleware: `authGuard`
+- [x] Фронт: LoginPage, RegisterPage, ForgotPasswordPage
+- [x] Фронт: AuthStore (Zustand) + ProtectedRoute
+- [x] Фронт: ProfilePage (никнейм, смена пароля, тема)
 
 ## Фаза 2: Проекты мероприятий
 
