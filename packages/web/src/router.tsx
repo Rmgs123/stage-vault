@@ -1,5 +1,6 @@
 import type { RouteObject } from 'react-router-dom'
 import { AppShell } from './components/layout/AppShell'
+import { ProtectedRoute } from './components/layout/ProtectedRoute'
 import AuthPage from './pages/AuthPage'
 import ForgotPasswordPage from './pages/ForgotPasswordPage'
 import ResetPasswordPage from './pages/ResetPasswordPage'
@@ -7,6 +8,7 @@ import VerifyEmailPage from './pages/VerifyEmailPage'
 import ProfilePage from './pages/ProfilePage'
 import DashboardPage from './pages/DashboardPage'
 import EventPage from './pages/EventPage'
+import PresenterPage from './pages/PresenterPage'
 import SettingsTab from './components/settings/SettingsTab'
 import FilesTab from './components/files/FilesTab'
 import TimelineTab from './components/timeline/TimelineTab'
@@ -19,6 +21,14 @@ export const routes: RouteObject[] = [
   { path: '/reset-password', element: <ResetPasswordPage /> },
   { path: '/verify-email', element: <VerifyEmailPage /> },
   { path: '/go', element: <CodeEntryPage /> },
+  {
+    path: '/events/:id/presenter',
+    element: (
+      <ProtectedRoute>
+        <PresenterPage />
+      </ProtectedRoute>
+    ),
+  },
   {
     element: <AppShell />,
     children: [

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useParams, useNavigate, Outlet, useLocation } from 'react-router-dom'
-import { ChevronLeft, FolderOpen, Clock, Users, Settings, Loader2 } from 'lucide-react'
+import { ChevronLeft, FolderOpen, Clock, Users, Settings, Loader2, MonitorPlay } from 'lucide-react'
 import { useEventStore } from '../store/eventStore'
 import { isCodeAccess } from '../utils/codeAccess'
 
@@ -79,6 +79,13 @@ export default function EventPage() {
               </div>
             </div>
             <div className="flex items-center gap-3">
+              <button
+                onClick={() => navigate(`/events/${id}/presenter`)}
+                className="flex items-center gap-2 px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white text-[13px] font-semibold rounded-xl transition-all duration-200 shadow-button hover:shadow-button-hover"
+              >
+                <MonitorPlay className="w-4 h-4" />
+                Пульт ведущего
+              </button>
               <span
                 className={`px-3 py-1.5 rounded-lg text-[12px] font-semibold ${status.bg} ${status.text}`}
               >
