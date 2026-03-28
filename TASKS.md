@@ -30,11 +30,11 @@
 
 ## Фаза 2: Проекты мероприятий
 
-- [ ] Модели Event, EventMember в Prisma, миграции
-- [ ] CRUD `/api/events`
-- [ ] `GET /api/events` — мои + где участник
-- [ ] Фронт: DashboardPage (карточки, создание)
-- [ ] Фронт: EventPage (layout с вкладками)
+- [x] Модели Event, EventMember в Prisma, миграции
+- [x] CRUD `/api/events`
+- [x] `GET /api/events` — мои + где участник
+- [x] Фронт: DashboardPage (карточки, создание)
+- [x] Фронт: EventPage (layout с вкладками)
 
 ## Фаза 3: Хранилище файлов
 

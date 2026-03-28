@@ -3,6 +3,7 @@ import cors from '@fastify/cors'
 import dotenv from 'dotenv'
 import authRoutes from './modules/auth/auth.routes.js'
 import usersRoutes from './modules/users/users.routes.js'
+import eventsRoutes from './modules/events/events.routes.js'
 
 dotenv.config({ path: '../../.env' })
 
@@ -16,6 +17,7 @@ await app.register(cors, {
 // Routes
 await app.register(authRoutes)
 await app.register(usersRoutes)
+await app.register(eventsRoutes)
 
 app.get('/api/health', async () => {
   return { status: 'ok', timestamp: new Date().toISOString() }

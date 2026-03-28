@@ -223,6 +223,82 @@ curl http://localhost:3000/api/users/me \
 
 ---
 
-### Фаза 2–10
+### Фаза 2: Проекты мероприятий
+
+#### 5.2.1 Создание проекта (через UI)
+
+1. Войди в аккаунт → попадёшь на **Dashboard** (`/`)
+2. Нажми **«+ Создать проект»**
+3. Заполни название (обязательно), описание и дату (опционально)
+4. Нажми **«Создать проект»**
+5. Должно перенаправить на страницу проекта (`/events/:id`)
+
+#### 5.2.2 Dashboard — список проектов
+
+1. Вернись на главную (`/`)
+2. Убедись, что карточка проекта отображается с названием, датой, статусом «черновик»
+3. Переключи фильтр **«Мои»** / **«Участвую»** — проект должен быть только в **«Мои»**
+4. Попробуй поиск по названию
+5. Попробуй сортировку «По дате» / «По названию»
+
+#### 5.2.3 Страница проекта — вкладки
+
+1. Нажми на карточку проекта → откроется страница с вкладками
+2. Проверь вкладки: **Файлы**, **Сценарий**, **Команда**, **Настройки**
+3. Каждая вкладка пока показывает заглушку с текстом о будущей реализации
+4. Кнопка **«<»** должна вернуть на Dashboard
+
+#### 5.2.4 Проверка через API (curl)
+
+```bash
+# Получи токен (если ещё нет):
+TOKEN=$(curl -s -X POST http://localhost:3000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test@test.com","password":"12345678"}' | grep -o '"accessToken":"[^"]*"' | cut -d'"' -f4)
+
+# Создать проект
+curl -X POST http://localhost:3000/api/events \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{"title":"Тестовый проект","description":"Описание"}'
+
+# Список проектов
+curl http://localhost:3000/api/events \
+  -H "Authorization: Bearer $TOKEN"
+
+# Получить проект (подставь id из ответа выше)
+curl http://localhost:3000/api/events/<id> \
+  -H "Authorization: Bearer $TOKEN"
+
+# Обновить проект
+curl -X PATCH http://localhost:3000/api/events/<id> \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{"title":"Новое название","status":"ready"}'
+
+# Удалить проект
+curl -X DELETE http://localhost:3000/api/events/<id> \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+#### 5.2.5 Проверка прав доступа
+
+- Только **владелец** может редактировать (`PATCH`) и удалять (`DELETE`) проект
+- Участник видит проект в `GET /api/events`, но не может его изменить (получит 403)
+- Неавторизованный пользователь получит 401
+
+---
+
+### Фаза 3–10
 
 > Будет дополняться по мере реализации.
+
+---
+
+## 6. Git: коммит и пуш
+
+```bash
+git add -A
+git commit -m "feat: Phase 2 — events CRUD, DashboardPage, EventPage with tabs"
+git push origin main
+```

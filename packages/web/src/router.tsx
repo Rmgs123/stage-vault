@@ -5,13 +5,8 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage'
 import ResetPasswordPage from './pages/ResetPasswordPage'
 import VerifyEmailPage from './pages/VerifyEmailPage'
 import ProfilePage from './pages/ProfilePage'
-
-const DashboardPlaceholder = () => (
-  <main className="max-w-[1280px] mx-auto px-8 py-8">
-    <h1 className="text-[28px] font-bold text-text-primary font-serif mb-2">Мои мероприятия</h1>
-    <p className="text-[14px] text-text-muted">Здесь будут ваши проекты</p>
-  </main>
-)
+import DashboardPage from './pages/DashboardPage'
+import EventPage, { FilesTab, TimelineTab, TeamTab, SettingsTab } from './pages/EventPage'
 
 export const routes: RouteObject[] = [
   { path: '/auth', element: <AuthPage /> },
@@ -21,8 +16,18 @@ export const routes: RouteObject[] = [
   {
     element: <AppShell />,
     children: [
-      { path: '/', element: <DashboardPlaceholder /> },
+      { path: '/', element: <DashboardPage /> },
       { path: '/profile', element: <ProfilePage /> },
+      {
+        path: '/events/:id',
+        element: <EventPage />,
+        children: [
+          { index: true, element: <FilesTab /> },
+          { path: 'timeline', element: <TimelineTab /> },
+          { path: 'team', element: <TeamTab /> },
+          { path: 'settings', element: <SettingsTab /> },
+        ],
+      },
     ],
   },
 ]
