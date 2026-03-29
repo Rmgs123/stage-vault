@@ -10,7 +10,9 @@
       "Bash(docker compose:*)",
       "Bash(curl -s http://localhost:3000/api/health)",
       "Bash(npm run:*)",
-      "Bash(npx vitest:*)"
+      "Bash(npx vitest:*)",
+      "Bash(curl -s -w \"\\\\n%{http_code}\" \"https://api.aitunnel.ru/v1/chat/completions\" -H \"Content-Type: application/json\" -H \"Authorization: Bearer sk-aitunnel-esZvvlHiQsiMemITW11szP6sGJM9xqck\" -d '{\"\"model\"\":\"\"deepseek-chat-v3-0324\"\",\"\"messages\"\":[{\"\"role\"\":\"\"user\"\",\"\"content\"\":\"\"hi\"\"}],\"\"max_tokens\"\":50}')",
+      "Bash(curl -s \"https://api.aitunnel.ru/v1/models\" -H \"Authorization: Bearer sk-aitunnel-esZvvlHiQsiMemITW11szP6sGJM9xqck\")"
     ]
   }
 }

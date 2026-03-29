@@ -267,7 +267,7 @@ export default async function aiRoutes(app: FastifyInstance) {
       })
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Ошибка ИИ-сервиса'
-      app.log.error(err, 'AI chat error')
+      app.log.error({ err, provider: env.AI_PROVIDER, model: env.AI_MODEL, baseUrl: env.AI_BASE_URL }, 'AI chat error')
 
       if (errorMessage.includes('AI_API_KEY не настроен')) {
         return reply.code(503).send({
@@ -275,8 +275,9 @@ export default async function aiRoutes(app: FastifyInstance) {
         })
       }
 
+      const detail = env.NODE_ENV !== 'production' ? ` (${errorMessage})` : ''
       return reply.code(502).send({
-        message: 'Не удалось получить ответ от ИИ. Попробуйте позже.',
+        message: `Не удалось получить ответ от ИИ. Попробуйте позже.${detail}`,
       })
     }
   })
