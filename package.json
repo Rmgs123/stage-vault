@@ -11,7 +11,10 @@
     "build:web": "npm run build -w packages/web",
     "lint": "eslint packages/*/src --ext .ts,.tsx",
     "format": "prettier --write \"packages/*/src/**/*.{ts,tsx,css}\"",
-    "format:check": "prettier --check \"packages/*/src/**/*.{ts,tsx,css}\""
+    "format:check": "prettier --check \"packages/*/src/**/*.{ts,tsx,css}\"",
+    "test": "npm run test -w packages/api && npm run test -w packages/web",
+    "test:api": "npm run test -w packages/api",
+    "test:web": "npm run test -w packages/web"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^7.0.0",

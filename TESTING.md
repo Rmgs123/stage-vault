@@ -1036,10 +1036,104 @@ docker compose down -v
 
 ---
 
+## 5.10 Фаза 10: Тестирование
+
+### 5.10.1 Запуск всех тестов
+
+```bash
+# Все тесты (api + web)
+npm test
+
+# Только бэкенд
+npm run test:api
+
+# Только фронтенд
+npm run test:web
+```
+
+### 5.10.2 Unit-тесты: auth модуль (21 тест)
+
+Файл: `packages/api/src/modules/auth/auth.test.ts`
+
+Покрытие:
+- `POST /api/auth/register` — успешная регистрация, валидация email/пароля/никнейма, дубли
+- `POST /api/auth/login` — успешный вход, неверный пароль, несуществующий пользователь, неподтверждённый email
+- `POST /api/auth/verify-email` — подтверждение, невалидный/отсутствующий токен
+- `POST /api/auth/refresh` — обновление токенов, невалидный refresh
+- `POST /api/auth/forgot-password` — защита от enumeration, пустой email
+- `POST /api/auth/reset-password` — обновление пароля, короткий пароль, невалидный токен
+
+```bash
+cd packages/api && npx vitest run src/modules/auth/auth.test.ts
+```
+
+### 5.10.3 Unit-тесты: access codes (11 тестов)
+
+Файл: `packages/api/src/modules/access/access.test.ts`
+
+Покрытие:
+- `POST /api/access/verify` — валидный код, несуществующий, отозванный, истёкший, невалидный формат, приведение к upper case
+- Protected endpoints — 401 без авторизации (генерация, получение, отзыв)
+
+```bash
+cd packages/api && npx vitest run src/modules/access/access.test.ts
+```
+
+### 5.10.4 Интеграционные тесты: events API (13 тестов)
+
+Файл: `packages/api/src/modules/events/events.test.ts`
+
+Покрытие:
+- `GET /api/events` — список мероприятий, 401 без авторизации
+- `POST /api/events` — создание, валидация, 401
+- `GET /api/events/:id` — получение, 404, 403 нет доступа
+- `PATCH /api/events/:id` — обновление, 403 не владелец
+- `DELETE /api/events/:id` — удаление, 403 не владелец, 404
+
+```bash
+cd packages/api && npx vitest run src/modules/events/events.test.ts
+```
+
+### 5.10.5 Фронтенд-тесты: UI-компоненты (21 тест)
+
+Файлы:
+- `packages/web/src/components/ui/Button.test.tsx` (8 тестов) — рендер, клик, disabled, loading, варианты, размеры
+- `packages/web/src/components/ui/Input.test.tsx` (7 тестов) — рендер, label, ошибка, ввод, rightIcon
+- `packages/web/src/components/ui/Modal.test.tsx` (6 тестов) — open/close, overlay click, Escape, заголовок
+
+```bash
+cd packages/web && npx vitest run src/components/ui/
+```
+
+### 5.10.6 Фронтенд-тесты: authStore (8 тестов)
+
+Файл: `packages/web/src/store/authStore.test.ts`
+
+Покрытие:
+- `login` — сохранение токенов и пользователя, вызов API
+- `register` — возврат сообщения
+- `logout` — очистка state и localStorage
+- `refreshTokens` — обновление, отсутствие токена, ошибка
+- `updateTheme` — обновление темы
+
+```bash
+cd packages/web && npx vitest run src/store/authStore.test.ts
+```
+
+### 5.10.7 Сводка
+
+| Пакет | Файлов | Тестов |
+|-------|--------|--------|
+| api | 3 | 45 |
+| web | 4 | 29 |
+| **Итого** | **7** | **74** |
+
+---
+
 ## 6. Git: коммит и пуш
 
 ```bash
 git add -A
-git commit -m "feat: phase 9 — dockerization (compose, nginx, seed, README)"
+git commit -m "feat: phase 10 — tests (auth, access, events, UI components, authStore)"
 git push origin main
 ```
