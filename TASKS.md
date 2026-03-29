@@ -106,13 +106,13 @@
 
 ## Фаза 9: Докеризация и деплой
 
-- [ ] Dockerfile для api (multi-stage)
-- [ ] Dockerfile для web (build + nginx)
-- [ ] `docker-compose.yml` (api + web + postgres + minio + nginx)
-- [ ] `nginx.conf`
-- [ ] `.env.example`
-- [ ] `scripts/seed.ts`
-- [ ] README с инструкцией по запуску
+- [x] Dockerfile для api (multi-stage)
+- [x] Dockerfile для web (build + nginx)
+- [x] `docker-compose.yml` (api + web + postgres + minio + nginx)
+- [x] `nginx.conf`
+- [x] `.env.example`
+- [x] `scripts/seed.ts`
+- [x] README с инструкцией по запуску
 
 ## Фаза 10: Тестирование и документация
 

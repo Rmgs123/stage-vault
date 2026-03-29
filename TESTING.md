@@ -930,10 +930,116 @@ curl -s http://localhost:3000/api/events/$EVENT_ID/ai/chat \
 
 ---
 
+## 5.9 Фаза 9: Докеризация и деплой
+
+### 5.9.1 Docker Compose: полный стек
+
+```bash
+# Из корня проекта
+cp .env.example .env
+# Отредактируй .env (JWT-секреты, AI_API_KEY и т.д.)
+
+# Собрать и запустить всё
+docker compose up -d --build
+
+# Проверить, что все сервисы запущены
+docker compose ps
+```
+
+Ожидаемый результат — 5 сервисов в статусе `running`:
+- `sv-postgres`
+- `sv-minio`
+- `sv-api`
+- `sv-web`
+- `sv-nginx`
+
+### 5.9.2 Проверка health-эндпоинта
+
+```bash
+curl http://localhost/api/health
+```
+
+Ожидаемый ответ:
+```json
+{"status":"ok","timestamp":"..."}
+```
+
+### 5.9.3 Проверка фронтенда
+
+Открой в браузере: http://localhost
+
+Ожидаемый результат:
+- Загружается страница логина StageVault
+- Нет ошибок в консоли браузера
+
+### 5.9.4 Seed (тестовые данные)
+
+```bash
+docker compose exec api npx tsx /app/scripts/seed.ts
+```
+
+Ожидаемый вывод:
+```
+Очистка базы данных...
+Создание пользователей...
+Создание мероприятий...
+...
+=== Seed завершён ===
+```
+
+### 5.9.5 Проверка после seed
+
+```bash
+# Логин тестовым пользователем
+curl -s -X POST http://localhost/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"admin@stage-vault.ru","password":"password123"}'
+```
+
+Ожидаемый ответ — JSON с `data.accessToken`.
+
+### 5.9.6 Проверка доступа по коду
+
+```bash
+curl -s -X POST http://localhost/api/access/verify \
+  -H "Content-Type: application/json" \
+  -d '{"code":"QUIZ42"}'
+```
+
+Ожидаемый ответ — JSON с `data.token` (временный JWT).
+
+### 5.9.7 Проверка MinIO (загрузка файлов)
+
+1. Залогинься через браузер (http://localhost)
+2. Открой мероприятие
+3. Загрузи любой файл на вкладке «Файлы»
+4. Файл должен загрузиться и отобразиться
+
+### 5.9.8 Проверка Nginx (gzip, проксирование)
+
+```bash
+# Проверить, что gzip включён
+curl -s -H "Accept-Encoding: gzip" -D - http://localhost/api/health -o /dev/null | grep -i content-encoding
+```
+
+Ожидаемый ответ: `content-encoding: gzip`
+
+### 5.9.9 Остановка
+
+```bash
+# Остановить сервисы (данные сохраняются)
+docker compose down
+
+# Остановить + удалить все данные
+docker compose down -v
+```
+
+---
+
 ## 6. Git: коммит и пуш
 
 ```bash
 git add -A
-git commit -m "feat: phase 8 — AI assistant (chat, context assembly, LLM proxy)"
+git commit -m "feat: phase 9 — dockerization (compose, nginx, seed, README)"
 git push origin main
 ```
