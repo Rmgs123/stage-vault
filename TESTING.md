@@ -821,10 +821,119 @@ curl -s -X POST http://localhost:3000/api/access/verify \
 
 ---
 
+## 5.8 Фаза 8: ИИ-ассистент
+
+> Перед тестированием убедись, что в `.env` настроены AI-переменные:
+> ```
+> AI_PROVIDER=openai        # или anthropic
+> AI_API_KEY=sk-your-key    # настоящий API-ключ
+> AI_MODEL=gpt-4o-mini      # или другая модель провайдера
+> AI_BASE_URL=https://api.openai.com/v1  # или URL совместимого провайдера
+> ```
+> Перезапусти API-сервер после изменения `.env`.
+
+### 5.8.1 curl: отправка сообщения ИИ
+
+```bash
+# Получить токен (если нет):
+TOKEN=$(curl -s http://localhost:3000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test@test.com","password":"Test1234!"}' | jq -r '.accessToken')
+
+# Получить ID мероприятия:
+EVENT_ID=$(curl -s http://localhost:3000/api/events \
+  -H "Authorization: Bearer $TOKEN" | jq -r '.[0].id')
+
+# Отправить сообщение ИИ:
+curl -s http://localhost:3000/api/events/$EVENT_ID/ai/chat \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"message": "Сколько файлов в проекте?"}' | jq .
+
+# Ожидаемый ответ:
+# { "data": { "role": "assistant", "content": "..." }, "message": "ok" }
+```
+
+### 5.8.2 curl: отправка с историей
+
+```bash
+curl -s http://localhost:3000/api/events/$EVENT_ID/ai/chat \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "message": "А какие из них музыкальные?",
+    "history": [
+      {"role": "user", "content": "Сколько файлов в проекте?"},
+      {"role": "assistant", "content": "В вашем проекте 5 файлов."}
+    ]
+  }' | jq .
+```
+
+### 5.8.3 curl: валидация — пустое сообщение
+
+```bash
+curl -s http://localhost:3000/api/events/$EVENT_ID/ai/chat \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"message": ""}' | jq .
+
+# Ожидаемый ответ: 400, "Сообщение не может быть пустым"
+```
+
+### 5.8.4 curl: доступ без авторизации
+
+```bash
+curl -s http://localhost:3000/api/events/$EVENT_ID/ai/chat \
+  -H "Content-Type: application/json" \
+  -d '{"message": "Привет"}' | jq .
+
+# Ожидаемый ответ: 401, "Необходима авторизация"
+```
+
+### 5.8.5 curl: ошибка при отсутствии AI_API_KEY
+
+Если `AI_API_KEY` не установлен или пуст в `.env`:
+```bash
+curl -s http://localhost:3000/api/events/$EVENT_ID/ai/chat \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"message": "Привет"}' | jq .
+
+# Ожидаемый ответ: 503, "ИИ-ассистент не настроен. Обратитесь к администратору."
+```
+
+### 5.8.6 UI: ИИ-чат в пульте ведущего
+
+1. Открой мероприятие → кнопка «Пульт ведущего»
+2. В правой панели нажми вкладку **ИИ** (иконка ✨)
+3. Появляется приветственное сообщение бота
+4. Введи вопрос (например, «Расскажи про файлы проекта») → нажми Enter или кнопку отправки
+5. Отображается индикатор загрузки (спиннер)
+6. Ответ ИИ появляется в чате
+7. Проверь «Очистить чат» — удаляет всю историю
+
+### 5.8.7 UI: ИИ-чат на странице мероприятия
+
+1. Открой любое мероприятие (страница с вкладками Файлы/Сценарий/Команда/Настройки)
+2. В правом нижнем углу — плавающая кнопка ✨
+3. Нажми — появляется всплывающий чат
+4. Задай вопрос — работает так же, как в пульте ведущего
+5. Закрой чат кнопкой ✕
+6. Перейди на другую вкладку — чат сохраняет историю (в рамках сессии)
+
+### 5.8.8 UI: доступ по коду площадки
+
+1. Войди по коду доступа (страница `/go`)
+2. На странице мероприятия плавающая кнопка ИИ доступна
+3. В пульте ведущего вкладка ИИ доступна
+4. ИИ видит файлы и сценарий мероприятия
+
+---
+
 ## 6. Git: коммит и пуш
 
 ```bash
 git add -A
-git commit -m "feat: Phase 5 — teams, invites, inbox (notifications, role management)"
+git commit -m "feat: phase 8 — AI assistant (chat, context assembly, LLM proxy)"
 git push origin main
 ```

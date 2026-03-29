@@ -21,4 +21,8 @@ export const env = {
   API_PORT: Number(process.env.API_PORT) || 3000,
   FRONTEND_URL: process.env.FRONTEND_URL || 'http://localhost:5173',
   NODE_ENV: process.env.NODE_ENV || 'development',
+  AI_PROVIDER: (process.env.AI_PROVIDER || 'openai') as 'openai' | 'anthropic',
+  AI_API_KEY: process.env.AI_API_KEY || '',
+  AI_MODEL: process.env.AI_MODEL || 'gpt-4o-mini',
+  AI_BASE_URL: process.env.AI_BASE_URL || 'https://api.openai.com/v1',
 } as const

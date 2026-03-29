@@ -10,6 +10,7 @@ import timelineRoutes from './modules/timeline/timeline.routes.js'
 import teamsRoutes from './modules/teams/teams.routes.js'
 import inboxRoutes from './modules/inbox/inbox.routes.js'
 import accessRoutes from './modules/access/access.routes.js'
+import aiRoutes from './modules/ai/ai.routes.js'
 
 dotenv.config({ path: '../../.env' })
 
@@ -35,6 +36,7 @@ await app.register(timelineRoutes)
 await app.register(teamsRoutes)
 await app.register(inboxRoutes)
 await app.register(accessRoutes)
+await app.register(aiRoutes)
 
 app.get('/api/health', async () => {
   return { status: 'ok', timestamp: new Date().toISOString() }

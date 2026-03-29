@@ -3,6 +3,7 @@ import { useParams, useNavigate, Outlet, useLocation } from 'react-router-dom'
 import { ChevronLeft, FolderOpen, Clock, Users, Settings, Loader2, MonitorPlay } from 'lucide-react'
 import { useEventStore } from '../store/eventStore'
 import { isCodeAccess } from '../utils/codeAccess'
+import AiChatWidget from '../components/ai/AiChatWidget'
 
 const TABS = [
   { id: 'files', label: 'Файлы', icon: FolderOpen, path: '' },
@@ -133,6 +134,9 @@ export default function EventPage() {
       <div className="max-w-[1400px] mx-auto px-8 py-6">
         <Outlet />
       </div>
+
+      {/* AI Chat Widget */}
+      {id && <AiChatWidget eventId={id} />}
     </>
   )
 }
