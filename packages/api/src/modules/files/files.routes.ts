@@ -225,7 +225,7 @@ export default async function filesRoutes(app: FastifyInstance) {
       return reply.code(404).send({ message: 'Файл не найден' })
     }
 
-    const url = await getPresignedUrl(file.s3Key)
+    const url = await getPresignedUrl(file.s3Key, 3600, file.originalName)
 
     return { ...file, downloadUrl: url }
   })

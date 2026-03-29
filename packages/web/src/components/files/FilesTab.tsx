@@ -200,21 +200,30 @@ export default function FilesTab() {
     async (fileId: string) => {
       if (!id) return
       if (!confirm('Удалить файл?')) return
-      await deleteFile(id, fileId)
+      try {
+        await deleteFile(id, fileId)
+      } catch (err) {
+        alert('Не удалось удалить файл: ' + ((err as { message?: string })?.message || 'Неизвестная ошибка'))
+      }
     },
     [id, deleteFile],
   )
 
   const handleDownload = useCallback(
-    async (fileId: string) => {
+    async (fileId: string, fileName: string) => {
       if (!id) return
       try {
         const file = await getFileUrl(id, fileId)
         if (file.downloadUrl) {
-          window.open(file.downloadUrl, '_blank')
+          const a = document.createElement('a')
+          a.href = file.downloadUrl
+          a.download = fileName
+          document.body.appendChild(a)
+          a.click()
+          document.body.removeChild(a)
         }
       } catch {
-        // Error
+        alert('Не удалось скачать файл')
       }
     },
     [id, getFileUrl],
@@ -374,7 +383,7 @@ export default function FilesTab() {
                             onClick={() =>
                               isImage
                                 ? handleViewImage(file, catFiles)
-                                : handleDownload(file.id)
+                                : handleDownload(file.id, file.name)
                             }
                             className="absolute top-2 right-2 w-7 h-7 bg-white/80 backdrop-blur rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-sm hover:bg-white"
                           >
@@ -395,7 +404,7 @@ export default function FilesTab() {
                           {isOwnerOrEditor && (
                             <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                               <button
-                                onClick={() => handleDownload(file.id)}
+                                onClick={() => handleDownload(file.id, file.name)}
                                 className={`w-6 h-6 flex items-center justify-center rounded-md ${cat.actionHoverBg}`}
                               >
                                 <Download className={`w-3 h-3 ${cat.actionColor}`} />
@@ -434,7 +443,7 @@ export default function FilesTab() {
                       </div>
                       <div className="flex items-center gap-1">
                         <button
-                          onClick={() => handleDownload(file.id)}
+                          onClick={() => handleDownload(file.id, file.name)}
                           className={`w-7 h-7 flex items-center justify-center rounded-lg ${cat.actionHoverBg} opacity-0 group-hover:opacity-100 transition-all`}
                         >
                           <Download className={`w-3.5 h-3.5 ${cat.actionColor}`} />

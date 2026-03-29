@@ -61,10 +61,14 @@ export async function deleteFile(key: string): Promise<void> {
 export async function getPresignedUrl(
   key: string,
   expiresIn = 3600,
+  downloadFilename?: string,
 ): Promise<string> {
   const command = new GetObjectCommand({
     Bucket: BUCKET,
     Key: key,
+    ...(downloadFilename && {
+      ResponseContentDisposition: `attachment; filename="${encodeURIComponent(downloadFilename)}"`,
+    }),
   })
   return getSignedUrl(s3, command, { expiresIn })
 }

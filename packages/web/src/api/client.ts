@@ -12,22 +12,44 @@ class ApiClient {
 
   private async request<T>(path: string, options: RequestInit = {}): Promise<T> {
     const token = this.getToken()
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-      ...((options.headers as Record<string, string>) || {}),
-    }
+    const headers = new Headers(options.headers)
+
+    const hasBody = options.body !== undefined && options.body !== null
+    const isFormData =
+      typeof FormData !== 'undefined' && options.body instanceof FormData
+
     if (token) {
-      headers['Authorization'] = `Bearer ${token}`
+      headers.set('Authorization', `Bearer ${token}`)
     }
 
-    const res = await fetch(`${API_BASE}${path}`, { ...options, headers })
+    if (hasBody && !isFormData && !headers.has('Content-Type')) {
+      headers.set('Content-Type', 'application/json')
+    }
+
+    const res = await fetch(`${API_BASE}${path}`, {
+      ...options,
+      headers,
+    })
 
     if (!res.ok) {
       const error = await res.json().catch(() => ({ message: 'Ошибка запроса' }))
-      throw { message: error.message || 'Ошибка запроса', statusCode: res.status } as ApiError
+      throw {
+        message: error.message || 'Ошибка запроса',
+        statusCode: res.status,
+      } as ApiError
     }
 
-    return res.json()
+    if (res.status === 204) {
+      return undefined as T
+    }
+
+    const contentType = res.headers.get('content-type') || ''
+    if (!contentType.includes('application/json')) {
+      return undefined as T
+    }
+
+    const text = await res.text()
+    return text ? (JSON.parse(text) as T) : (undefined as T)
   }
 
   get<T>(path: string) {
@@ -37,14 +59,14 @@ class ApiClient {
   post<T>(path: string, body?: unknown) {
     return this.request<T>(path, {
       method: 'POST',
-      body: body ? JSON.stringify(body) : undefined,
+      body: body !== undefined ? JSON.stringify(body) : undefined,
     })
   }
 
   patch<T>(path: string, body?: unknown) {
     return this.request<T>(path, {
       method: 'PATCH',
-      body: body ? JSON.stringify(body) : undefined,
+      body: body !== undefined ? JSON.stringify(body) : undefined,
     })
   }
 
@@ -70,7 +92,10 @@ class ApiClient {
 
     if (!res.ok) {
       const error = await res.json().catch(() => ({ message: 'Ошибка запроса' }))
-      throw { message: error.message || 'Ошибка запроса', statusCode: res.status } as ApiError
+      throw {
+        message: error.message || 'Ошибка запроса',
+        statusCode: res.status,
+      } as ApiError
     }
 
     return res.json()
