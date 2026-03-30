@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { Send, Bot, Loader2, Trash2 } from 'lucide-react'
 import { useAiStore } from '../../store/aiStore'
+import { useAuthStore } from '../../store/authStore'
 import MessageBubble from './MessageBubble'
 
 interface Props {
@@ -9,9 +10,19 @@ interface Props {
 
 export default function AiChatPanel({ eventId }: Props) {
   const [input, setInput] = useState('')
-  const { chats, isLoading, sendMessage, clearChat } = useAiStore()
+  const { chats, isLoading, sendMessage, clearChat, init } = useAiStore()
+  const user = useAuthStore((s) => s.user)
   const messages = chats[eventId] || []
   const scrollRef = useRef<HTMLDivElement>(null)
+  const initialized = useRef(false)
+
+  // Load persisted chat history
+  useEffect(() => {
+    if (user?.id && !initialized.current) {
+      initialized.current = true
+      init(user.id)
+    }
+  }, [user?.id, init])
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
@@ -37,7 +48,7 @@ export default function AiChatPanel({ eventId }: Props) {
   return (
     <div className="flex-1 flex flex-col min-h-0">
       {/* Messages */}
-      <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3">
+      <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3 ai-chat-scroll">
         {messages.length === 0 && !isLoading && (
           <div className="flex gap-2">
             <div className="w-6 h-6 bg-gradient-to-br from-[#A98B76] to-[#7A6A5C] rounded-md flex items-center justify-center shrink-0">

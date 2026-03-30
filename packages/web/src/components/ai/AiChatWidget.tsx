@@ -13,7 +13,7 @@ export default function AiChatWidget({ eventId }: Props) {
     <>
       {/* Floating Chat Panel */}
       {isOpen && (
-        <div className="fixed bottom-24 right-8 w-[340px] h-[480px] bg-[#231E18] border border-[#3A3228] rounded-2xl shadow-[0_8px_40px_rgba(0,0,0,0.4)] flex flex-col z-50 overflow-hidden">
+        <div className="fixed bottom-24 right-8 w-[420px] h-[600px] bg-[#231E18] border border-[#3A3228] rounded-2xl shadow-[0_8px_40px_rgba(0,0,0,0.4)] flex flex-col z-50 overflow-hidden">
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-[#3A3228]">
             <div className="flex items-center gap-2">

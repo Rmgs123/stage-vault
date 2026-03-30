@@ -218,6 +218,7 @@ export default function DashboardPage() {
       ) : (
         <EmptyState
           activeFilter={activeFilter}
+          isSearching={searchQuery.trim().length > 0}
           onCreateClick={() => setShowCreateModal(true)}
         />
       )}
@@ -321,30 +322,40 @@ function EventGrid({
 
 function EmptyState({
   activeFilter,
+  isSearching,
   onCreateClick,
 }: {
   activeFilter: string
+  isSearching: boolean
   onCreateClick: () => void
 }) {
   return (
     <div className="flex flex-col items-center justify-center py-24">
       <div className="w-20 h-20 bg-brand-100 rounded-3xl flex items-center justify-center mb-5">
-        <FolderOpen className="w-9 h-9 text-brand-400" />
+        {isSearching ? (
+          <Search className="w-9 h-9 text-brand-400" />
+        ) : (
+          <FolderOpen className="w-9 h-9 text-brand-400" />
+        )}
       </div>
       <h3
         className="text-[18px] font-semibold text-text-secondary mb-2"
         style={{ fontFamily: "'Georgia', serif" }}
       >
-        {activeFilter === 'mine'
-          ? 'У вас пока нет проектов'
-          : 'Вы ещё не участвуете в проектах'}
+        {isSearching
+          ? 'Ничего не найдено'
+          : activeFilter === 'mine'
+            ? 'У вас пока нет проектов'
+            : 'Вы ещё не участвуете в проектах'}
       </h3>
       <p className="text-[14px] text-text-light mb-6 text-center max-w-[320px]">
-        {activeFilter === 'mine'
-          ? 'Создайте свой первый проект, чтобы начать работу'
-          : 'Когда вас пригласят в проект, он появится здесь'}
+        {isSearching
+          ? 'Попробуйте изменить поисковый запрос'
+          : activeFilter === 'mine'
+            ? 'Создайте свой первый проект, чтобы начать работу'
+            : 'Когда вас пригласят в проект, он появится здесь'}
       </p>
-      {activeFilter === 'mine' && (
+      {!isSearching && activeFilter === 'mine' && (
         <button
           onClick={onCreateClick}
           className="flex items-center gap-2 px-5 py-3 bg-brand-600 hover:bg-brand-700 text-white text-[14px] font-semibold rounded-xl transition-all duration-200 shadow-button"
