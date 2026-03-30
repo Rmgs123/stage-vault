@@ -37,7 +37,7 @@ export function Modal({ open, onClose, title, children, maxWidth = 'max-w-md' }:
 
       {/* Panel */}
       <div
-        className={`relative w-full ${maxWidth} mx-4 bg-white rounded-2xl shadow-dropdown p-6 animate-in fade-in zoom-in-95 duration-200`}
+        className={`relative w-full ${maxWidth} mx-4 bg-surface rounded-2xl shadow-dropdown p-6 animate-in fade-in zoom-in-95 duration-200`}
       >
         {/* Header */}
         {title && (

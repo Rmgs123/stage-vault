@@ -44,7 +44,7 @@ export function MobileGuard({ children }: MobileGuardProps) {
         </div>
 
         {/* Card */}
-        <div className="w-full bg-white rounded-2xl shadow-card p-6 text-center mb-6">
+        <div className="w-full bg-surface rounded-2xl shadow-card p-6 text-center mb-6">
           <h2 className="text-[20px] font-bold text-text-primary font-serif mb-3">
             Мобильная версия пока недоступна
           </h2>
@@ -59,7 +59,7 @@ export function MobileGuard({ children }: MobileGuardProps) {
           href="https://stage-vault.ru"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-5 py-3 bg-white border border-brand-300 rounded-xl text-[14px] font-semibold text-brand-600 hover:bg-brand-50 transition-all duration-200"
+          className="inline-flex items-center gap-2 px-5 py-3 bg-surface border border-brand-300 rounded-xl text-[14px] font-semibold text-brand-600 hover:bg-brand-50 transition-all duration-200"
         >
           <ExternalLink className="w-4 h-4" />
           Открыть stage-vault.ru

@@ -373,7 +373,7 @@ export default function FilesTab() {
                     return (
                       <div
                         key={file.id}
-                        className={`bg-white rounded-xl border ${cat.cardBorder} p-4 ${cat.cardHoverShadow} transition-all duration-200 group cursor-pointer`}
+                        className={`bg-surface rounded-xl border ${cat.cardBorder} p-4 ${cat.cardHoverShadow} transition-all duration-200 group cursor-pointer`}
                       >
                         <div
                           className={`w-full h-24 ${cat.key === 'presentation' ? 'bg-[#7C3AED]/5' : cat.key === 'image' ? 'bg-[#E67E22]/5' : cat.key === 'video' ? 'bg-[#E74C3C]/5' : 'bg-gray-50'} rounded-lg mb-3 flex items-center justify-center relative overflow-hidden`}
@@ -385,7 +385,7 @@ export default function FilesTab() {
                                 ? handleViewImage(file, catFiles)
                                 : handleDownload(file.id, file.name)
                             }
-                            className="absolute top-2 right-2 w-7 h-7 bg-white/80 backdrop-blur rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-sm hover:bg-white"
+                            className="absolute top-2 right-2 w-7 h-7 bg-surface/80 backdrop-blur rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-sm hover:bg-surface"
                           >
                             {isImage ? (
                               <Eye className={`w-3.5 h-3.5 ${cat.btnText}`} />
@@ -430,7 +430,7 @@ export default function FilesTab() {
                   {catFiles.map((file) => (
                     <div
                       key={file.id}
-                      className={`flex items-center gap-3 px-4 py-3 bg-white rounded-xl border ${cat.cardBorder} hover:shadow-sm transition-all duration-200 group cursor-pointer`}
+                      className={`flex items-center gap-3 px-4 py-3 bg-surface rounded-xl border ${cat.cardBorder} hover:shadow-sm transition-all duration-200 group cursor-pointer`}
                     >
                       <Icon className={`w-5 h-5 ${cat.actionColor}`} />
                       <div className="flex-1 min-w-0">

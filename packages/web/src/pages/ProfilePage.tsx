@@ -118,7 +118,7 @@ export default function ProfilePage() {
       </h1>
 
       {/* Avatar & Name */}
-      <div className="bg-white rounded-2xl border border-brand-300 p-8 mb-5">
+      <div className="bg-surface rounded-2xl border border-brand-300 p-8 mb-5">
         <div className="flex items-center gap-6">
           <div className="w-24 h-24 bg-brand-600 rounded-2xl flex items-center justify-center text-white text-[36px] font-bold font-serif">
             {initial}
@@ -136,13 +136,13 @@ export default function ProfilePage() {
       </div>
 
       {/* Account Info */}
-      <div className="bg-white rounded-2xl border border-brand-300 overflow-hidden mb-5">
-        <div className="px-8 py-5 border-b border-[#F0EAE2]">
+      <div className="bg-surface rounded-2xl border border-brand-300 overflow-hidden mb-5">
+        <div className="px-8 py-5 border-b border-brand-300/50">
           <h3 className="text-[16px] font-semibold text-text-primary">Данные аккаунта</h3>
         </div>
 
         {/* Email */}
-        <div className="px-8 py-5 border-b border-[#F0EAE2]">
+        <div className="px-8 py-5 border-b border-brand-300/50">
           <div className="flex items-start justify-between">
             <div className="flex items-start gap-4">
               <div className="w-10 h-10 bg-brand-100 rounded-xl flex items-center justify-center mt-0.5">
@@ -238,8 +238,8 @@ export default function ProfilePage() {
       </div>
 
       {/* Security */}
-      <div className="bg-white rounded-2xl border border-brand-300 overflow-hidden mb-5">
-        <div className="px-8 py-5 border-b border-[#F0EAE2]">
+      <div className="bg-surface rounded-2xl border border-brand-300 overflow-hidden mb-5">
+        <div className="px-8 py-5 border-b border-brand-300/50">
           <h3 className="text-[16px] font-semibold text-text-primary">Безопасность</h3>
         </div>
 
@@ -392,8 +392,8 @@ export default function ProfilePage() {
       </div>
 
       {/* Settings */}
-      <div className="bg-white rounded-2xl border border-brand-300 overflow-hidden mb-5">
-        <div className="px-8 py-5 border-b border-[#F0EAE2]">
+      <div className="bg-surface rounded-2xl border border-brand-300 overflow-hidden mb-5">
+        <div className="px-8 py-5 border-b border-brand-300/50">
           <h3 className="text-[16px] font-semibold text-text-primary">Настройки</h3>
         </div>
 
@@ -433,7 +433,7 @@ export default function ProfilePage() {
       </div>
 
       {/* Danger Zone */}
-      <div className="bg-white rounded-2xl border border-red-200 overflow-hidden">
+      <div className="bg-surface rounded-2xl border border-red-200 overflow-hidden">
         <div className="px-8 py-5 border-b border-red-100">
           <h3 className="text-[16px] font-semibold text-red-500">Опасная зона</h3>
         </div>

@@ -134,7 +134,7 @@ export default function DashboardPage() {
             className={`px-5 py-2.5 text-[13px] font-semibold transition-all duration-200 ${
               activeFilter === 'mine'
                 ? 'bg-brand-600 text-white'
-                : 'bg-white text-brand-600 hover:bg-brand-100'
+                : 'bg-surface text-brand-600 hover:bg-brand-100'
             }`}
           >
             Мои
@@ -144,7 +144,7 @@ export default function DashboardPage() {
             className={`px-5 py-2.5 text-[13px] font-semibold transition-all duration-200 ${
               activeFilter === 'participating'
                 ? 'bg-brand-600 text-white'
-                : 'bg-white text-brand-600 hover:bg-brand-100'
+                : 'bg-surface text-brand-600 hover:bg-brand-100'
             }`}
           >
             Участвую
@@ -159,7 +159,7 @@ export default function DashboardPage() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Поиск проектов..."
-            className="w-full pl-10 pr-4 py-2.5 bg-white border border-brand-300 rounded-xl text-[13px] text-text-primary placeholder-text-placeholder outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-600/10 transition-all duration-200"
+            className="w-full pl-10 pr-4 py-2.5 bg-surface border border-brand-300 rounded-xl text-[13px] text-text-primary placeholder-text-placeholder outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-600/10 transition-all duration-200"
           />
         </div>
 
@@ -169,14 +169,14 @@ export default function DashboardPage() {
         <div ref={sortRef} className="relative">
           <button
             onClick={() => setShowSortMenu(!showSortMenu)}
-            className="flex items-center gap-2 px-4 py-2.5 bg-white border border-brand-300 rounded-xl text-[13px] text-brand-900 hover:border-brand-600 transition-all duration-200"
+            className="flex items-center gap-2 px-4 py-2.5 bg-surface border border-brand-300 rounded-xl text-[13px] text-brand-900 hover:border-brand-600 transition-all duration-200"
           >
             <ArrowUpDown className="w-3.5 h-3.5 text-text-muted" />
             {sortBy === 'date' ? 'По дате' : 'По названию'}
             <ChevronDown className="w-3.5 h-3.5 text-text-muted" />
           </button>
           {showSortMenu && (
-            <div className="absolute right-0 top-11 w-[180px] bg-white rounded-xl shadow-dropdown border border-brand-300 overflow-hidden py-1 z-10">
+            <div className="absolute right-0 top-11 w-[180px] bg-surface rounded-xl shadow-dropdown border border-brand-300 overflow-hidden py-1 z-10">
               <button
                 onClick={() => {
                   setSortBy('date')
@@ -264,7 +264,7 @@ function EventGrid({
           <div
             key={event.id}
             onClick={() => navigate(`/events/${event.id}`)}
-            className="bg-white rounded-2xl border border-brand-300 overflow-hidden cursor-pointer hover:shadow-[0_8px_24px_rgba(169,139,118,0.12)] hover:border-brand-500 transition-all duration-200 group"
+            className="bg-surface rounded-2xl border border-brand-300 overflow-hidden cursor-pointer hover:shadow-card hover:border-brand-500 transition-all duration-200 group"
           >
             {/* Cover */}
             <div className="relative h-[160px] bg-brand-100 overflow-hidden">
@@ -299,7 +299,7 @@ function EventGrid({
               </div>
 
               {/* Meta row */}
-              <div className="flex items-center justify-between pt-3.5 border-t border-[#F0EAE2]">
+              <div className="flex items-center justify-between pt-3.5 border-t border-brand-300/50">
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-1.5 text-[12px] text-text-light">
                     <Users className="w-3.5 h-3.5" />
@@ -383,7 +383,7 @@ function CreateEventModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative bg-white rounded-2xl shadow-dropdown w-full max-w-[480px] mx-4">
+      <div className="relative bg-surface rounded-2xl shadow-dropdown w-full max-w-[480px] mx-4">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-brand-300">
           <h2

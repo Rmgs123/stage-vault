@@ -127,7 +127,7 @@ export default function InboxPanel({ onClose }: InboxPanelProps) {
   return (
     <div
       ref={ref}
-      className="absolute right-0 top-12 w-[380px] bg-white rounded-2xl shadow-dropdown border border-brand-300 overflow-hidden z-50"
+      className="absolute right-0 top-12 w-[380px] bg-surface rounded-2xl shadow-dropdown border border-brand-300 overflow-hidden z-50"
     >
       {/* Header */}
       <div className="px-5 py-4 border-b border-brand-300">

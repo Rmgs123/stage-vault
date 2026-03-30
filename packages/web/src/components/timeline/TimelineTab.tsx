@@ -66,7 +66,7 @@ function ProgressBar({
   const progressPercent = blocks.length > 0 ? Math.round((completedCount / blocks.length) * 100) : 0
 
   return (
-    <div className="bg-white rounded-2xl border border-brand-300 p-5 mb-6">
+    <div className="bg-surface rounded-2xl border border-brand-300 p-5 mb-6">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-3">
           <h2 className="text-[16px] font-bold text-text-primary">Ход мероприятия</h2>
@@ -155,9 +155,9 @@ function BlockCard({
       onDragOver={onDragOver}
       onDragEnd={onDragEnd}
       onDrop={onDrop}
-      className={`bg-white rounded-2xl border overflow-hidden transition-all duration-200 ${
+      className={`bg-surface rounded-2xl border overflow-hidden transition-all duration-200 ${
         isCurrent
-          ? 'border-brand-600 shadow-[0_4px_20px_rgba(169,139,118,0.15)] ring-1 ring-brand-600/20'
+          ? 'border-brand-600 shadow-card ring-1 ring-brand-600/20'
           : isComplete
             ? 'border-brand-300 opacity-60'
             : 'border-brand-300 hover:border-brand-400'
@@ -375,7 +375,7 @@ function BlockFormModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
-      <div className="bg-white rounded-2xl shadow-dropdown w-full max-w-[480px] mx-4">
+      <div className="bg-surface rounded-2xl shadow-dropdown w-full max-w-[480px] mx-4">
         <div className="flex items-center justify-between px-6 py-4 border-b border-brand-300">
           <h3 className="text-[16px] font-bold text-text-primary font-serif">
             {block ? 'Редактировать блок' : 'Новый блок сценария'}
@@ -468,7 +468,7 @@ function FilePickerModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
-      <div className="bg-white rounded-2xl shadow-dropdown w-full max-w-[480px] mx-4 max-h-[70vh] flex flex-col">
+      <div className="bg-surface rounded-2xl shadow-dropdown w-full max-w-[480px] mx-4 max-h-[70vh] flex flex-col">
         <div className="flex items-center justify-between px-6 py-4 border-b border-brand-300">
           <h3 className="text-[16px] font-bold text-text-primary font-serif">
             Прикрепить файл

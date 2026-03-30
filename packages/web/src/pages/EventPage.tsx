@@ -59,7 +59,7 @@ export default function EventPage() {
   return (
     <>
       {/* Project Header */}
-      <div className="bg-white border-b border-brand-300">
+      <div className="bg-surface border-b border-brand-300">
         <div className="max-w-[1400px] mx-auto px-8">
           <div className="py-5 flex items-center justify-between">
             <div className="flex items-center gap-4">

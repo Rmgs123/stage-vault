@@ -19,7 +19,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
       <div
         ref={ref}
         className={clsx(
-          'bg-white rounded-2xl border border-brand-300 overflow-hidden',
+          'bg-surface rounded-2xl border border-brand-300 overflow-hidden',
           hoverable &&
             'cursor-pointer hover:shadow-card hover:border-brand-600/40 transition-all duration-200',
           paddingStyles[padding],

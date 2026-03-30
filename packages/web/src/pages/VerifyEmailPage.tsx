@@ -44,7 +44,7 @@ export default function VerifyEmailPage() {
           </span>
         </div>
 
-        <div className="w-full bg-white rounded-2xl shadow-card p-8 text-center">
+        <div className="w-full bg-surface rounded-2xl shadow-card p-8 text-center">
           {status === 'loading' && (
             <div className="py-8">
               <Loader2 className="w-10 h-10 text-brand-600 animate-spin mx-auto mb-4" />

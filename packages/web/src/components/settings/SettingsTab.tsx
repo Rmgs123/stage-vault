@@ -185,7 +185,7 @@ export default function SettingsTab() {
       </h2>
 
       {/* Basic info card */}
-      <div className="bg-white rounded-2xl border border-brand-300 p-6 mb-6">
+      <div className="bg-surface rounded-2xl border border-brand-300 p-6 mb-6">
         <h3 className="text-[15px] font-semibold text-text-primary mb-5">Основная информация</h3>
 
         <div className="flex flex-col gap-5">
@@ -267,7 +267,7 @@ export default function SettingsTab() {
       </div>
 
       {/* Access Code card */}
-      <div className="bg-white rounded-2xl border border-brand-300 p-6 mb-6">
+      <div className="bg-surface rounded-2xl border border-brand-300 p-6 mb-6">
         <div className="flex items-start gap-3 mb-1">
           <div className="w-10 h-10 bg-brand-100 rounded-xl flex items-center justify-center flex-shrink-0">
             <KeyRound className="w-5 h-5 text-brand-600" />
@@ -302,7 +302,7 @@ export default function SettingsTab() {
                   {activeCode.code.split('').map((char, idx) => (
                     <div
                       key={idx}
-                      className="w-11 h-12 bg-white border border-brand-300 rounded-lg flex items-center justify-center text-[20px] font-bold text-text-primary"
+                      className="w-11 h-12 bg-surface border border-brand-300 rounded-lg flex items-center justify-center text-[20px] font-bold text-text-primary"
                     >
                       {char}
                     </div>
@@ -405,7 +405,7 @@ export default function SettingsTab() {
       </div>
 
       {/* Danger zone */}
-      <div className="bg-white rounded-2xl border border-red-200 p-6">
+      <div className="bg-surface rounded-2xl border border-red-200 p-6">
         <div className="flex items-start gap-3 mb-4">
           <div className="w-10 h-10 bg-red-50 rounded-xl flex items-center justify-center flex-shrink-0">
             <AlertTriangle className="w-5 h-5 text-red-500" />

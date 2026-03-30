@@ -57,7 +57,7 @@ export default function FileUploader({ eventId }: FileUploaderProps) {
       className={`mb-6 border-2 border-dashed rounded-2xl p-6 text-center transition-all duration-200 cursor-pointer ${
         dragOver
           ? 'border-brand-600 bg-brand-600/5'
-          : 'border-brand-400 bg-white/40 hover:border-brand-500'
+          : 'border-brand-400 bg-surface/40 hover:border-brand-500'
       }`}
     >
       <input

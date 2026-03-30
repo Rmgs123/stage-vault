@@ -56,7 +56,7 @@ export default function ForgotPasswordPage() {
         </div>
 
         {/* Card */}
-        <div className="w-full bg-white rounded-2xl shadow-card p-8">
+        <div className="w-full bg-surface rounded-2xl shadow-card p-8">
           {/* Back button */}
           <Link
             to="/auth"

@@ -54,7 +54,7 @@ export default function ResetPasswordPage() {
           </span>
         </div>
 
-        <div className="w-full bg-white rounded-2xl shadow-card p-8">
+        <div className="w-full bg-surface rounded-2xl shadow-card p-8">
           {!done ? (
             <div>
               <div className="w-14 h-14 bg-brand-100 rounded-2xl flex items-center justify-center mb-5">

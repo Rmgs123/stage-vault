@@ -86,7 +86,7 @@ export default function AuthPage() {
         </div>
 
         {/* Card */}
-        <div className="w-full bg-white rounded-2xl shadow-card p-8">
+        <div className="w-full bg-surface rounded-2xl shadow-card p-8">
           {/* Tab Toggle */}
           <div className="flex rounded-xl overflow-hidden border border-brand-300 mb-8">
             <button

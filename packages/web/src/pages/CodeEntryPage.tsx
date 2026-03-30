@@ -123,7 +123,7 @@ export default function CodeEntryPage() {
         </div>
 
         {/* Card */}
-        <div className="w-full bg-white rounded-2xl shadow-card p-8">
+        <div className="w-full bg-surface rounded-2xl shadow-card p-8">
           {/* Back link */}
           <button
             onClick={() => navigate('/auth')}

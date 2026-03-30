@@ -1,13 +1,13 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Vault, Bell, ChevronDown, User, Moon, LogOut, KeyRound } from 'lucide-react'
+import { Vault, Bell, ChevronDown, User, Moon, Sun, LogOut, KeyRound } from 'lucide-react'
 import { useAuthStore } from '../../store/authStore'
 import { useNotificationStore } from '../../store/notificationStore'
 import InboxPanel from '../inbox/InboxPanel'
 import { isCodeAccess, clearCodeAccess } from '../../utils/codeAccess'
 
 export function Header() {
-  const { user, logout } = useAuthStore()
+  const { user, logout, updateTheme } = useAuthStore()
   const { unreadCount, fetchUnreadCount } = useNotificationStore()
   const navigate = useNavigate()
   const [showProfileMenu, setShowProfileMenu] = useState(false)
@@ -40,7 +40,7 @@ export function Header() {
   const displayName = user ? (user.nickname || user.email.split('@')[0]) : ''
 
   return (
-    <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-brand-300">
+    <header className="sticky top-0 z-50 bg-surface/90 backdrop-blur-md border-b border-brand-300">
       <div className="max-w-[1280px] mx-auto px-8 h-16 flex items-center justify-between">
         {/* Logo */}
         <button onClick={() => navigate('/')} className="flex items-center gap-3">
@@ -107,7 +107,7 @@ export function Header() {
                 </button>
 
                 {showProfileMenu && (
-                  <div className="absolute right-0 top-12 w-[220px] bg-white rounded-2xl shadow-dropdown border border-brand-300 overflow-hidden py-2">
+                  <div className="absolute right-0 top-12 w-[220px] bg-surface rounded-2xl shadow-dropdown border border-brand-300 overflow-hidden py-2">
                     <div className="px-4 py-3 border-b border-brand-300">
                       <p className="text-[14px] font-semibold text-text-primary">{displayName}</p>
                       <p className="text-[12px] text-text-light">
@@ -125,9 +125,19 @@ export function Header() {
                         <User className="w-4 h-4 text-text-muted" />
                         Профиль
                       </button>
-                      <button className="w-full px-4 py-2.5 flex items-center gap-3 text-[13px] text-text-secondary hover:bg-brand-50 transition-colors duration-150">
-                        <Moon className="w-4 h-4 text-text-muted" />
-                        Тёмная тема
+                      <button
+                        onClick={() => {
+                          const next = user!.theme === 'dark' ? 'light' : 'dark'
+                          updateTheme(next)
+                        }}
+                        className="w-full px-4 py-2.5 flex items-center gap-3 text-[13px] text-text-secondary hover:bg-brand-50 transition-colors duration-150"
+                      >
+                        {user!.theme === 'dark' ? (
+                          <Sun className="w-4 h-4 text-text-muted" />
+                        ) : (
+                          <Moon className="w-4 h-4 text-text-muted" />
+                        )}
+                        {user!.theme === 'dark' ? 'Светлая тема' : 'Тёмная тема'}
                       </button>
                     </div>
                     <div className="border-t border-brand-300 pt-1">

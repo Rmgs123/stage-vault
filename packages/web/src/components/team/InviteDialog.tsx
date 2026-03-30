@@ -80,7 +80,7 @@ export default function InviteDialog({ eventId, existingMemberIds, onClose }: In
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative bg-white rounded-2xl shadow-dropdown border border-brand-300 w-[480px] overflow-hidden">
+      <div className="relative bg-surface rounded-2xl shadow-dropdown border border-brand-300 w-[480px] overflow-hidden">
         {/* Header */}
         <div className="px-6 py-5 border-b border-brand-300 flex items-center justify-between">
           <h3 className="text-[17px] font-bold text-text-primary">Пригласить участника</h3>
@@ -104,7 +104,7 @@ export default function InviteDialog({ eventId, existingMemberIds, onClose }: In
               value={query}
               onChange={(e) => handleSearchChange(e.target.value)}
               placeholder="@nickname или email..."
-              className="w-full pl-10 pr-4 py-3 bg-white border border-brand-300 rounded-xl text-[14px] text-text-primary placeholder-brand-400 outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-600/10 transition-all duration-200"
+              className="w-full pl-10 pr-4 py-3 bg-surface border border-brand-300 rounded-xl text-[14px] text-text-primary placeholder-brand-400 outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-600/10 transition-all duration-200"
               autoFocus
             />
           </div>

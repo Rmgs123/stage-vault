@@ -121,7 +121,7 @@ function RoleSelector({
       </button>
 
       {open && (
-        <div className="absolute top-10 left-0 w-[180px] bg-white rounded-xl shadow-dropdown border border-brand-300 overflow-hidden py-1 z-20">
+        <div className="absolute top-10 left-0 w-[180px] bg-surface rounded-xl shadow-dropdown border border-brand-300 overflow-hidden py-1 z-20">
           <button
             onClick={() => handleChange('editor')}
             className={`w-full px-4 py-2.5 text-left text-[13px] flex items-center gap-2 transition-colors duration-150 ${
@@ -205,7 +205,7 @@ export default function TeamTab() {
       </div>
 
       {/* Members Table */}
-      <div className="bg-white rounded-2xl border border-brand-300 overflow-hidden">
+      <div className="bg-surface rounded-2xl border border-brand-300 overflow-hidden">
         {/* Table Header */}
         <div className="grid grid-cols-12 gap-4 px-6 py-3.5 border-b border-brand-300 bg-brand-50/50">
           <div className="col-span-5 text-[12px] font-semibold text-text-muted uppercase tracking-wider">
